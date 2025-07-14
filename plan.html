@@ -23,12 +23,12 @@
 <body>
   <div class="container">
     <div class="header-image">
-      <img src="https://github.com/deadpoetxxx/mixalou/raw/main/InkedChatGPT%20Image%2014%20%CE%99%CE%BF%CF%85%CE%BB%202025,%2001_37_58%20%CE%BC.%CE%BC._LI.jpg" width="150" alt="Η Μιχαλού κρατάει τα λεφτά">
+      <img src="https://github.com/deadpoetxxx/mixalou/raw/main/mixalou.jpg" width="150" alt="Η Μιχαλού κρατάει τα λεφτά">
     </div>
     <h1>Η Μιχαλού σου βγάζει πλάνο</h1>
 
     <div class="wizard-step active" id="step1">
-      <h2>☕️ Καλησπέρα παιδί μου. Πόσα βγάζεις το μήνα από σταθερούς μισθούς;</h2>
+      <h2>☕️ Καλησπέρα παιδί μου. Πόσα βγάζεις το μήνα από σταθερούς μισθούς; <br><small>(αν ντρέπεσαι βάλε ψέματα, εγώ θα σε καταλάβω)</small></h2>
       <input type="number" id="incomeFixed" placeholder="π.χ. 1200">
       <div class="nav-buttons">
         <button onclick="nextStep(2)">Επόμενο</button>
@@ -36,7 +36,7 @@
     </div>
 
     <div class="wizard-step" id="step2">
-      <h2>💸 Υπάρχει κάτι έξτρα; Μήπως κανα φραγκάκι από πεθερικά ή μπόνους;</h2>
+      <h2>💸 Υπάρχει κάτι έξτρα; Χαρτζιλίκι, μπόνους, δωρεές από θεία στο Καναδά;</h2>
       <input type="number" id="incomeExtra" placeholder="π.χ. 100">
       <div class="nav-buttons">
         <button onclick="prevStep(1)">Προηγούμενο</button>
@@ -45,7 +45,7 @@
     </div>
 
     <div class="wizard-step" id="step3">
-      <h2>📊 Καλώς. Τώρα πάμε στα έξοδα. Για να μη μας φάνε οι λογαριασμοί.</h2>
+      <h2>📊 Ωραία. Το κουμάντο ξεκινάει από το εισόδημα. Πάμε στα έξοδα τώρα!</h2>
       <div class="nav-buttons">
         <button onclick="prevStep(2)">Προηγούμενο</button>
         <button onclick="nextStep(4)">Επόμενο</button>
@@ -53,7 +53,7 @@
     </div>
 
     <div class="wizard-step" id="step4">
-      <h2>🏠 Πόσα δίνεις για ενοίκιο; Αν δεν πληρώνεις, βάλε 0 και κέρασε καφέ.</h2>
+      <h2>🏠 Πάγια έξοδα: Πόσα δίνεις για ενοίκιο;</h2>
       <input type="number" id="rent" placeholder="π.χ. 400">
       <div class="nav-buttons">
         <button onclick="prevStep(3)">Προηγούμενο</button>
@@ -62,7 +62,7 @@
     </div>
 
     <div class="wizard-step" id="step5">
-      <h2>🔌 Ρεύμα, νερό, ίντερνετ – βάλε το συνολάκι τους εδώ</h2>
+      <h2>🔌 Ρεύμα, νερό, ίντερνετ – πόσα πάνε το μήνα όλα μαζί;</h2>
       <input type="number" id="utilities" placeholder="π.χ. 150">
       <div class="nav-buttons">
         <button onclick="prevStep(4)">Προηγούμενο</button>
@@ -71,7 +71,7 @@
     </div>
 
     <div class="wizard-step" id="step6">
-      <h2>💊 Παιδιά, φροντιστήρια, χοροί και κακές συνήθειες (βλ. τσιγάρα)</h2>
+      <h2>💊 Έξοδα για φροντιστήρια, δραστηριότητες και… τσιγάρα (αν επιμένεις)</h2>
       <input type="number" id="kids" placeholder="π.χ. 100">
       <input type="number" id="cigarettes" placeholder="π.χ. 50">
       <div class="nav-buttons">
