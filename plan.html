@@ -1,1 +1,110 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Η Μιχαλού σου βγάζει πλάνο</title>
+  <style>
+    body { font-family: sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
+    .container { max-width: 800px; margin: 40px auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+    h1, h2 { text-align: center; color: #2c3e50; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input[type="number"], input[type="text"] { width: 100%; padding: 10px; font-size: 16px; margin-top: 5px; }
+    button { margin-top: 20px; background: #0d1b2a; color: white; border: none; padding: 15px; width: 100%; font-size: 18px; cursor: pointer; border-radius: 5px; }
+    .result { background: #e0e1dd; padding: 20px; margin-top: 30px; border-radius: 8px; font-size: 18px; }
+    .debt-entry { display: flex; gap: 10px; margin-top: 10px; }
+    .debt-entry input { flex: 1; }
+    table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+    th { background-color: #ddd; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Η Μιχαλού σου βγάζει πλάνο</h1>
+
+    <label>Εισόδημα (σύνολο οικογένειας €):</label>
+    <input type="number" id="income" placeholder="π.χ. 3000">
+
+    <label>Μηνιαία Πάγια Έξοδα (€):</label>
+    <input type="number" id="expenses" placeholder="π.χ. 1600">
+
+    <h2>Οφειλές</h2>
+    <div id="debts"></div>
+    <button type="button" onclick="addDebt()">+ Προσθήκη Οφειλής</button>
+
+    <label for="savings">Προτεινόμενη Αποταμίευση (€):</label>
+    <input type="number" id="savings" placeholder="π.χ. 150">
+
+    <button onclick="calculateDetailedPlan()">Υπολόγισε το πλάνο</button>
+
+    <div class="result" id="result" style="display:none;"></div>
+  </div>
+
+  <script>
+    function addDebt() {
+      const container = document.getElementById('debts');
+      const div = document.createElement('div');
+      div.className = 'debt-entry';
+      div.innerHTML = `
+        <input type="text" placeholder="Ονομασία Οφειλής" class="debt-name">
+        <input type="number" placeholder="Ποσό (€)" class="debt-amount">
+      `;
+      container.appendChild(div);
+    }
+
+    function calculateDetailedPlan() {
+      const income = parseFloat(document.getElementById('income').value);
+      const expenses = parseFloat(document.getElementById('expenses').value);
+      const savings = parseFloat(document.getElementById('savings').value);
+      const debtNames = document.querySelectorAll('.debt-name');
+      const debtAmounts = document.querySelectorAll('.debt-amount');
+      const resultDiv = document.getElementById('result');
+
+      let debts = [];
+      for (let i = 0; i < debtNames.length; i++) {
+        const name = debtNames[i].value;
+        const amount = parseFloat(debtAmounts[i].value);
+        if (name && !isNaN(amount) && amount > 0) {
+          debts.push({ name, amount });
+        }
+      }
+
+      if (isNaN(income) || isNaN(expenses) || isNaN(savings) || income <= 0 || expenses < 0 || savings < 0 || debts.length === 0) {
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = '📌 Συμπλήρωσε σωστά όλα τα πεδία και τουλάχιστον μία οφειλή.';
+        return;
+      }
+
+      const available = income - expenses - savings;
+      if (available <= 0) {
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = '⚠️ Δεν περισσεύουν χρήματα για αποπληρωμή χρεών. Μείωσε έξοδα ή αποταμίευση.';
+        return;
+      }
+
+      let plan = [];
+      debts.forEach(debt => {
+        const months = Math.ceil(debt.amount / available);
+        plan.push({
+          name: debt.name,
+          amount: debt.amount,
+          months,
+          monthly: (debt.amount / months).toFixed(2)
+        });
+      });
+
+      let html = `💡 Διαθέσιμα για αποπληρωμή: <strong>${available.toFixed(2)}€</strong> το μήνα.<br><br>`;
+      html += `<table><tr><th>Οφειλή</th><th>Ποσό (€)</th><th>Μήνες</th><th>Μηνιαία Πληρωμή (€)</th></tr>`;
+      plan.forEach(row => {
+        html += `<tr><td>${row.name}</td><td>${row.amount}</td><td>${row.months}</td><td>${row.monthly}</td></tr>`;
+      });
+      html += `</table>`;
+
+      resultDiv.innerHTML = html;
+      resultDiv.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
 
