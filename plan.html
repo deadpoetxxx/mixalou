@@ -17,16 +17,10 @@
     .nav-buttons { display: flex; justify-content: space-between; margin-top: 20px; }
     .nav-buttons button { width: 48%; }
     .hidden { display: none; }
-    .header-image { text-align: center; margin-bottom: 20px; }
-    .header-image img { max-width: 100%; height: auto; border-radius: 8px; }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="header-image">
-       <img src="https://github.com/deadpoetxxx/mixalou/mixalou.jpg?raw=true" alt="Η Μιχαλού κρατάει τα λεφτά">
-  
-    </div>
     <h1>Η Μιχαλού σου βγάζει πλάνο</h1>
 
     <div id="scenarioSelector">
@@ -71,7 +65,6 @@
         <label>Φροντιστήρια / Δραστηριότητες (€)</label><input type="number" id="kidsActivities">
         <label>Ασφάλειες (μηνιαίος υπολογισμός) (€)</label><input type="number" id="insurance">
         <label>Τέλη Κυκλοφορίας (μηνιαίος υπολογισμός) (€)</label><input type="number" id="carFees">
-        <label>Τσιγάρα (αν επιμένεις!) (€)</label><input type="number" id="cigarettes">
         <div class="nav-buttons">
           <button onclick="nextStep(3)">Προηγούμενο</button>
           <button onclick="nextStep(5)">Επόμενο</button>
@@ -129,7 +122,6 @@
       const kids = parseFloat(document.getElementById('kidsActivities').value || 0);
       const insurance = parseFloat(document.getElementById('insurance').value || 0);
       const carFees = parseFloat(document.getElementById('carFees').value || 0);
-      const cigarettes = parseFloat(document.getElementById('cigarettes').value || 0);
 
       const loanBank = parseFloat(document.getElementById('loanBank').value || 0);
       const creditCard = parseFloat(document.getElementById('creditCard').value || 0);
@@ -137,7 +129,7 @@
       const others = parseFloat(document.getElementById('others').value || 0);
 
       const debt = loanBank + creditCard + taxes + others;
-      const totalExpenses = rent + electricity + water + utilities + internet + kids + insurance + carFees + cigarettes + debt;
+      const totalExpenses = rent + electricity + water + utilities + internet + kids + insurance + carFees + debt;
       const leftover = income - totalExpenses;
 
       const result = document.getElementById('result');
@@ -155,7 +147,6 @@
           <li>Διασκέδαση: ${(leftover * 0.10).toFixed(2)} €</li>
           <li>Αποταμίευση (ναι, ναι!): ${(leftover * 0.20).toFixed(2)} €</li>
         </ul>
-        ${cigarettes > 0 ? `<p style="color:red;"><strong>💣 Καπνίζεις; Η Μιχαλού λέει: κόφ' τα να μη σε κόψει η ζωή και το πορτοφόλι μαζί!</strong></p>` : ''}
         <p><em>💡 Tip της Μιχαλούς: Διάλεξε προϊόντα ιδιωτικής ετικέτας – εξοικονομείς έως και 20% στα ψώνια σου. Πες της Μιχαλούς πως σ’ το είπα!</em></p>
       `;
     }
