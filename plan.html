@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Η Μιχαλού σου βγάζει πλάνο</title>
+  <style>
+    body { font-family: sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: 40px auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: #2c3e50; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input[type="number"] { width: 100%; padding: 10px; font-size: 16px; margin-top: 5px; }
+    button { margin-top: 20px; background: #0d1b2a; color: white; border: none; padding: 15px; width: 100%; font-size: 18px; cursor: pointer; border-radius: 5px; }
+    .result { background: #e0e1dd; padding: 20px; margin-top: 30px; border-radius: 8px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Η Μιχαλού σου βγάζει πλάνο</h1>
+    <label for="totalDebt">Σύνολο Χρεών (€):</label>
+    <input type="number" id="totalDebt" placeholder="π.χ. 8500">
+
+    <label for="monthlyBudget">Πόσα μπορείς να δίνεις το μήνα (€):</label>
+    <input type="number" id="monthlyBudget" placeholder="π.χ. 400">
+
+    <button onclick="calculatePlan()">Υπολόγισε το πλάνο</button>
+
+    <div class="result" id="result" style="display:none;"></div>
+  </div>
+
+  <script>
+    function calculatePlan() {
+      const debt = parseFloat(document.getElementById('totalDebt').value);
+      const monthly = parseFloat(document.getElementById('monthlyBudget').value);
+      const resultDiv = document.getElementById('result');
+
+      if (isNaN(debt) || isNaN(monthly) || debt <= 0 || monthly <= 0) {
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = '📌 Σε παρακαλώ βάλε σωστά ποσά.';
+        return;
+      }
+
+      const months = Math.ceil(debt / monthly);
+      const lastMonthPayment = (debt % monthly) || monthly;
+
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = `📅 Θα χρειαστείς περίπου <strong>${months}</strong> μήνες για να ξεχρεώσεις.<br>
+      💶 Τον τελευταίο μήνα θα πληρώσεις περίπου <strong>${lastMonthPayment.toFixed(2)}€</strong>.<br><br>
+      🧠 <em>Συμβουλή της Μιχαλούς:</em> Αν μπορείς, βάλε λίγα παραπάνω στην αρχή για να μειώσεις τους μήνες.`;
+    }
+  </script>
+</body>
+</html>
