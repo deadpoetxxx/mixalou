@@ -90,6 +90,50 @@
       `;
       container.appendChild(div);
     }
+
+    function calculateFullPlan() {
+      const income1 = parseFloat(document.getElementById('income1').value) || 0;
+      const income2 = parseFloat(document.getElementById('income2').value) || 0;
+      const totalIncome = income1 + income2;
+
+      let fixed = 0;
+      document.querySelectorAll('#fixed-expenses .expense-amount').forEach(input => {
+        fixed += parseFloat(input.value) || 0;
+      });
+
+      let debts = 0;
+      document.querySelectorAll('#debts .debt-amount').forEach(input => {
+        debts += parseFloat(input.value) || 0;
+      });
+
+      let optional = 0;
+      document.querySelectorAll('#optional-expenses .expense-amount').forEach(input => {
+        const checkbox = input.closest('.entry').querySelector('.expense-optional');
+        const isChecked = checkbox ? checkbox.checked : true;
+        if (isChecked) optional += parseFloat(input.value) || 0;
+      });
+
+      const savingsRate = parseFloat(document.getElementById('savingsPlan').value) || 0;
+      const savings = totalIncome * savingsRate;
+
+      const totalOut = fixed + debts + optional + savings;
+      const leftover = totalIncome - totalOut;
+
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = `
+        <h3>Μηνιαίο Πλάνο</h3>
+        <table>
+          <tr><th>Κατηγορία</th><th>Ποσό (€)</th></tr>
+          <tr><td>Έσοδα</td><td>${totalIncome.toFixed(2)}</td></tr>
+          <tr><td>Πάγια Έξοδα</td><td>${fixed.toFixed(2)}</td></tr>
+          <tr><td>Οφειλές</td><td>${debts.toFixed(2)}</td></tr>
+          <tr><td>Προαιρετικά Έξοδα</td><td>${optional.toFixed(2)}</td></tr>
+          <tr><td>Αποταμίευση</td><td>${savings.toFixed(2)}</td></tr>
+          <tr><th>Υπόλοιπο</th><th>${leftover.toFixed(2)}</th></tr>
+        </table>
+      `;
+      resultDiv.style.display = 'block';
+    }
   </script>
 </body>
 </html>
