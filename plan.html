@@ -69,7 +69,18 @@
       const div = document.createElement('div');
       div.className = 'expense-entry';
       div.innerHTML = `
-        <input type="text" placeholder="Κατηγορία (π.χ. Σούπερ Μάρκετ)" class="expense-name">
+        <select class="expense-name">
+          <option value="Σούπερ Μάρκετ">Σούπερ Μάρκετ</option>
+          <option value="Ρούχα / Παπούτσια">Ρούχα / Παπούτσια</option>
+          <option value="Ψυχαγωγία">Ψυχαγωγία</option>
+          <option value="ΔΕΗ / Νερό / Ίντερνετ">ΔΕΗ / Νερό / Ίντερνετ</option>
+          <option value="Δάνεια / Πιστωτικές">Δάνεια / Πιστωτικές</option>
+          <option value="Μετακίνηση / Καύσιμα">Μετακίνηση / Καύσιμα</option>
+          <option value="Φροντιστήρια Παιδιών">Φροντιστήρια Παιδιών</option>
+<option value="Δραστηριότητες Παιδιών">Δραστηριότητες Παιδιών</option>
+<option value="Σχολικά / Είδη Γραφείου">Σχολικά / Είδη Γραφείου</option>
+<option value="Άλλα">Άλλα</option>
+        </select>`
         <input type="number" placeholder="Ποσό (€)" class="expense-amount">
         <label><input type="checkbox" class="expense-optional"> Προαιρετικό</label>
       `;
