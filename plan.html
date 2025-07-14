@@ -6,133 +6,107 @@
   <title>Η Μιχαλού σου βγάζει πλάνο</title>
   <style>
     body { font-family: sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
-    .container { max-width: 900px; margin: 40px auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+    .container { max-width: 700px; margin: 40px auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
     h1, h2, h3 { text-align: center; color: #2c3e50; }
     label { display: block; margin-top: 15px; font-weight: bold; }
     input[type="number"], input[type="text"], select { width: 100%; padding: 10px; font-size: 16px; margin-top: 5px; }
     button { margin-top: 20px; background: #0d1b2a; color: white; border: none; padding: 15px; width: 100%; font-size: 18px; cursor: pointer; border-radius: 5px; }
     .result { background: #e0e1dd; padding: 20px; margin-top: 30px; border-radius: 8px; font-size: 18px; }
-    .entry { display: flex; gap: 10px; margin-top: 10px; align-items: center; }
-    .entry input, .entry select { flex: 1; }
-    .entry label { font-weight: normal; font-size: 14px; }
-    table { width: 100%; margin-top: 20px; border-collapse: collapse; }
-    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
-    th { background-color: #ddd; }
+    .step { display: none; }
+    .active { display: block; }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Η Μιχαλού σου βγάζει πλάνο</h1>
 
-    <h2>Έσοδα</h2>
-    <label>Εισόδημα Δικό σου (€):</label>
-    <input type="number" id="income1" placeholder="π.χ. 1800">
+    <div class="step active" id="step1">
+      <label>Πόσα φέρνεις στο σπίτι σταθερά από τη δουλειά κάθε μήνα; (€)</label>
+      <input type="number" id="incomeFixed">
+      <button onclick="nextStep(2)">Επόμενο</button>
+    </div>
 
-    <label>Εισόδημα Συζύγου (€):</label>
-    <input type="number" id="income2" placeholder="π.χ. 1300">
+    <div class="step" id="step2">
+      <label>Υπάρχει και κανένα τυχερό (π.χ. πεθερά, λαχείο); (€)</label>
+      <input type="number" id="incomeExtra">
+      <button onclick="nextStep(3)">Επόμενο</button>
+    </div>
 
-    <h2>Πάγια Έξοδα</h2>
-    <div id="fixed-expenses"></div>
-    <button type="button" onclick="addExpense('fixed-expenses')">+ Προσθήκη Πάγιου Εξόδου</button>
+    <div class="step" id="step3">
+      <p id="totalIncomeText"></p>
+      <button onclick="nextStep(4)">Πάμε να δούμε τι τρως</button>
+    </div>
 
-    <h2>Οφειλές</h2>
-    <div id="debts"></div>
-    <button type="button" onclick="addDebt()">+ Προσθήκη Οφειλής</button>
+    <div class="step" id="step4">
+      <label>Ενοίκιο (€)</label><input type="number" id="rent">
+      <label>Ρεύμα (€)</label><input type="number" id="electricity">
+      <label>Νερό (€)</label><input type="number" id="water">
+      <label>Κοινόχρηστα (€)</label><input type="number" id="utilities">
+      <label>Τηλέφωνο/Ίντερνετ (€)</label><input type="number" id="internet">
+      <label>Φροντιστήρια / Δραστηριότητες (€)</label><input type="number" id="kidsActivities">
+      <label>Ασφάλειες (μηνιαίος υπολογισμός) (€)</label><input type="number" id="insurance">
+      <label>Τέλη Κυκλοφορίας (μηνιαίος υπολογισμός) (€)</label><input type="number" id="carFees">
+      <button onclick="nextStep(5)">Επόμενο</button>
+    </div>
 
-    <h2>Προαιρετικά Έξοδα</h2>
-    <div id="optional-expenses"></div>
-    <button type="button" onclick="addExpense('optional-expenses', true)">+ Προσθήκη Προαιρετικού Εξόδου</button>
-
-    <label for="savingsPlan">Πλάνο Αποταμίευσης:</label>
-    <select id="savingsPlan">
-      <option value="0">Καθόλου</option>
-      <option value="0.05">Μικρή (5%)</option>
-      <option value="0.10">Μέτρια (10%)</option>
-      <option value="0.20">Μεγάλη (20%)</option>
-    </select>
-
-    <button onclick="calculateFullPlan()">Υπολόγισε το πλάνο</button>
+    <div class="step" id="step5">
+      <label>Τι χρωστάς και σε ποιους, παιδί μου;</label>
+      <label>Δάνειο Τράπεζας (€)</label><input type="number" id="loanBank">
+      <label>Πιστωτική Κάρτα (€)</label><input type="number" id="creditCard">
+      <label>Εφορία (€)</label><input type="number" id="taxes">
+      <label>Άλλοι (π.χ. συγγενείς, φίλοι) (€)</label><input type="number" id="others">
+      <button onclick="calculatePlan()">Ρώτα τη Μιχαλού</button>
+    </div>
 
     <div class="result" id="result" style="display:none;"></div>
   </div>
 
   <script>
-    function addDebt() {
-      const container = document.getElementById('debts');
-      const div = document.createElement('div');
-      div.className = 'entry';
-      div.innerHTML = `
-        <input type="text" placeholder="Ονομασία Οφειλής" class="debt-name">
-        <input type="number" placeholder="Ποσό (€)" class="debt-amount">
-      `;
-      container.appendChild(div);
+    function nextStep(step) {
+      document.querySelectorAll('.step').forEach(div => div.classList.remove('active'));
+      document.getElementById('step' + step).classList.add('active');
+      if (step === 3) {
+        const total = (parseFloat(document.getElementById('incomeFixed').value || 0) + parseFloat(document.getElementById('incomeExtra').value || 0)).toFixed(2);
+        document.getElementById('totalIncomeText').innerText = `Τα κουκιά είναι ${total}€ το μήνα. Μη μου πεις ότι δεν ήξερες...`;
+      }
     }
 
-    function addExpense(containerId, isOptional = false) {
-      const container = document.getElementById(containerId);
-      const div = document.createElement('div');
-      div.className = 'entry';
-      div.innerHTML = `
-        <select class="expense-name">
-          <option value="Σούπερ Μάρκετ">Σούπερ Μάρκετ</option>
-          <option value="Ρούχα / Παπούτσια">Ρούχα / Παπούτσια</option>
-          <option value="Ψυχαγωγία">Ψυχαγωγία</option>
-          <option value="ΔΕΗ / Νερό / Ίντερνετ">ΔΕΗ / Νερό / Ίντερνετ</option>
-          <option value="Δάνεια / Πιστωτικές">Δάνεια / Πιστωτικές</option>
-          <option value="Μετακίνηση / Καύσιμα">Μετακίνηση / Καύσιμα</option>
-          <option value="Φροντιστήρια Παιδιών">Φροντιστήρια Παιδιών</option>
-          <option value="Δραστηριότητες Παιδιών">Δραστηριότητες Παιδιών</option>
-          <option value="Σχολικά / Είδη Γραφείου">Σχολικά / Είδη Γραφείου</option>
-          <option value="Άλλα">Άλλα</option>
-        </select>
-        <input type="number" placeholder="Ποσό (€)" class="expense-amount">
-        ${isOptional ? '<label><input type="checkbox" class="expense-optional" checked> Προαιρετικό</label>' : ''}
+    function calculatePlan() {
+      const income = parseFloat(document.getElementById('incomeFixed').value || 0) + parseFloat(document.getElementById('incomeExtra').value || 0);
+      const rent = parseFloat(document.getElementById('rent').value || 0);
+      const electricity = parseFloat(document.getElementById('electricity').value || 0);
+      const water = parseFloat(document.getElementById('water').value || 0);
+      const utilities = parseFloat(document.getElementById('utilities').value || 0);
+      const internet = parseFloat(document.getElementById('internet').value || 0);
+      const kids = parseFloat(document.getElementById('kidsActivities').value || 0);
+      const insurance = parseFloat(document.getElementById('insurance').value || 0);
+      const carFees = parseFloat(document.getElementById('carFees').value || 0);
+      const debt = parseFloat(document.getElementById('loanBank').value || 0) +
+                   parseFloat(document.getElementById('creditCard').value || 0) +
+                   parseFloat(document.getElementById('taxes').value || 0) +
+                   parseFloat(document.getElementById('others').value || 0);
+
+      const totalExpenses = rent + electricity + water + utilities + internet + kids + insurance + carFees + debt;
+      const leftover = income - totalExpenses;
+
+      const result = document.getElementById('result');
+      result.style.display = 'block';
+      result.innerHTML = `
+        <h3>Πλάνο Μιχαλούς</h3>
+        <p><strong>Σύνολο Εισοδήματος:</strong> ${income.toFixed(2)} €</p>
+        <p><strong>Σύνολο Εξόδων:</strong> ${totalExpenses.toFixed(2)} €</p>
+        <p><strong>Υπόλοιπο για τα "άλλα":</strong> ${leftover.toFixed(2)} €</p>
+        <h4>Η Μιχαλού προτείνει:</h4>
+        <ul>
+          <li>Σούπερ Μάρκετ: ${(leftover * 0.35).toFixed(2)} €</li>
+          <li>Καύσιμα / Μετακίνηση: ${(leftover * 0.20).toFixed(2)} €</li>
+          <li>Ρούχα / Είδη Σπιτιού: ${(leftover * 0.15).toFixed(2)} €</li>
+          <li>Διασκέδαση: ${(leftover * 0.10).toFixed(2)} €</li>
+          <li>Αποταμίευση (ναι, ναι!): ${(leftover * 0.20).toFixed(2)} €</li>
+        </ul>
+        <p><em>💡 Tip της Μιχαλούς: Διάλεξε προϊόντα ιδιωτικής ετικέτας – εξοικονομείς έως και 20% στα ψώνια σου. Πες της Μιχαλούς πως σ’ το είπα!</em></p>
       `;
-      container.appendChild(div);
-    }
-
-    function calculateFullPlan() {
-      const income1 = parseFloat(document.getElementById('income1').value) || 0;
-      const income2 = parseFloat(document.getElementById('income2').value) || 0;
-      const totalIncome = income1 + income2;
-
-      let fixed = 0;
-      document.querySelectorAll('#fixed-expenses .expense-amount').forEach(input => {
-        fixed += parseFloat(input.value) || 0;
-      });
-
-      let debts = 0;
-      document.querySelectorAll('#debts .debt-amount').forEach(input => {
-        debts += parseFloat(input.value) || 0;
-      });
-
-      let optional = 0;
-      document.querySelectorAll('#optional-expenses .expense-amount').forEach(input => {
-        const checkbox = input.closest('.entry').querySelector('.expense-optional');
-        const isChecked = checkbox ? checkbox.checked : true;
-        if (isChecked) optional += parseFloat(input.value) || 0;
-      });
-
-      const savingsRate = parseFloat(document.getElementById('savingsPlan').value) || 0;
-      const savings = totalIncome * savingsRate;
-
-      const totalOut = fixed + debts + optional + savings;
-      const leftover = totalIncome - totalOut;
-
-      const resultDiv = document.getElementById('result');
-      resultDiv.innerHTML = `
-        <h3>Μηνιαίο Πλάνο</h3>
-        <table>
-          <tr><th>Κατηγορία</th><th>Ποσό (€)</th></tr>
-          <tr><td>Έσοδα</td><td>${totalIncome.toFixed(2)}</td></tr>
-          <tr><td>Πάγια Έξοδα</td><td>${fixed.toFixed(2)}</td></tr>
-          <tr><td>Οφειλές</td><td>${debts.toFixed(2)}</td></tr>
-          <tr><td>Προαιρετικά Έξοδα</td><td>${optional.toFixed(2)}</td></tr>
-          <tr><td>Αποταμίευση</td><td>${savings.toFixed(2)}</td></tr>
-          <tr><th>Υπόλοιπο</th><th>${leftover.toFixed(2)}</th></tr>
-        </table>
-      `;
-      resultDiv.style.display = 'block';
+      nextStep(6);
     }
   </script>
 </body>
