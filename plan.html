@@ -1,5 +1,4 @@
-
-,<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="el">
 <head>
   <meta charset="UTF-8">
@@ -15,6 +14,8 @@
     .result { background: #e0e1dd; padding: 20px; margin-top: 30px; border-radius: 8px; font-size: 18px; }
     .step { display: none; }
     .active { display: block; }
+    .nav-buttons { display: flex; justify-content: space-between; margin-top: 20px; }
+    .nav-buttons button { width: 48%; }
   </style>
 </head>
 <body>
@@ -24,18 +25,27 @@
     <div class="step active" id="step1">
       <label>Πόσα φέρνεις στο σπίτι σταθερά από τη δουλειά κάθε μήνα; (€)</label>
       <input type="number" id="incomeFixed">
-      <button onclick="nextStep(2)">Επόμενο</button>
+      <div class="nav-buttons">
+        <button onclick="resetSteps()">Αρχή</button>
+        <button onclick="nextStep(2)">Επόμενο</button>
+      </div>
     </div>
 
     <div class="step" id="step2">
       <label>Υπάρχει και κανένα τυχερό (π.χ. πεθερά, λαχείο); (€)</label>
       <input type="number" id="incomeExtra">
-      <button onclick="nextStep(3)">Επόμενο</button>
+      <div class="nav-buttons">
+        <button onclick="nextStep(1)">Προηγούμενο</button>
+        <button onclick="nextStep(3)">Επόμενο</button>
+      </div>
     </div>
 
     <div class="step" id="step3">
       <p id="totalIncomeText"></p>
-      <button onclick="nextStep(4)">Πάμε να δούμε τι τρως</button>
+      <div class="nav-buttons">
+        <button onclick="nextStep(2)">Προηγούμενο</button>
+        <button onclick="nextStep(4)">Πάμε να δούμε τι τρως</button>
+      </div>
     </div>
 
     <div class="step" id="step4">
@@ -47,16 +57,22 @@
       <label>Φροντιστήρια / Δραστηριότητες (€)</label><input type="number" id="kidsActivities">
       <label>Ασφάλειες (μηνιαίος υπολογισμός) (€)</label><input type="number" id="insurance">
       <label>Τέλη Κυκλοφορίας (μηνιαίος υπολογισμός) (€)</label><input type="number" id="carFees">
-      <button onclick="nextStep(5)">Επόμενο</button>
+      <div class="nav-buttons">
+        <button onclick="nextStep(3)">Προηγούμενο</button>
+        <button onclick="nextStep(5)">Επόμενο</button>
+      </div>
     </div>
 
     <div class="step" id="step5">
       <label>Τι χρωστάς και σε ποιους, παιδί μου;</label>
-      <label>Δάνειο Τράπεζας (€)</label><input type="number" id="loanBank">
-      <label>Πιστωτική Κάρτα (€)</label><input type="number" id="creditCard">
-      <label>Εφορία (€)</label><input type="number" id="taxes">
-      <label>Άλλοι (π.χ. συγγενείς, φίλοι) (€)</label><input type="number" id="others">
-      <button onclick="calculatePlan()">Ρώτα τη Μιχαλού</button>
+      <label>Δάνειο Τράπεζας (ΜΗΝΙΑΙΑ ΔΟΣΗ) (€)</label><input type="number" id="loanBank">
+      <label>Πιστωτική Κάρτα (ΜΗΝΙΑΙΑ ΔΟΣΗ) (€)</label><input type="number" id="creditCard">
+      <label>Εφορία (ΜΗΝΙΑΙΑ ΔΟΣΗ ή ΡΥΘΜΙΣΗ) (€)</label><input type="number" id="taxes">
+      <label>Άλλοι (π.χ. συγγενείς, φίλοι - ΜΗΝΙΑΙΑ) (€)</label><input type="number" id="others">
+      <div class="nav-buttons">
+        <button onclick="nextStep(4)">Προηγούμενο</button>
+        <button onclick="calculatePlan()">Ρώτα τη Μιχαλού</button>
+      </div>
     </div>
 
     <div class="result" id="result" style="display:none;"></div>
@@ -72,6 +88,12 @@
       }
     }
 
+    function resetSteps() {
+      document.querySelectorAll('.step').forEach(div => div.classList.remove('active'));
+      document.getElementById('step1').classList.add('active');
+      document.getElementById('result').style.display = 'none';
+    }
+
     function calculatePlan() {
       const income = parseFloat(document.getElementById('incomeFixed').value || 0) + parseFloat(document.getElementById('incomeExtra').value || 0);
       const rent = parseFloat(document.getElementById('rent').value || 0);
@@ -82,11 +104,13 @@
       const kids = parseFloat(document.getElementById('kidsActivities').value || 0);
       const insurance = parseFloat(document.getElementById('insurance').value || 0);
       const carFees = parseFloat(document.getElementById('carFees').value || 0);
-      const debt = parseFloat(document.getElementById('loanBank').value || 0) +
-                   parseFloat(document.getElementById('creditCard').value || 0) +
-                   parseFloat(document.getElementById('taxes').value || 0) +
-                   parseFloat(document.getElementById('others').value || 0);
 
+      const loanBank = parseFloat(document.getElementById('loanBank').value || 0);
+      const creditCard = parseFloat(document.getElementById('creditCard').value || 0);
+      const taxes = parseFloat(document.getElementById('taxes').value || 0);
+      const others = parseFloat(document.getElementById('others').value || 0);
+
+      const debt = loanBank + creditCard + taxes + others;
       const totalExpenses = rent + electricity + water + utilities + internet + kids + insurance + carFees + debt;
       const leftover = income - totalExpenses;
 
