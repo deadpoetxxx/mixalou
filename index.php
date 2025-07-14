@@ -1,0 +1,52 @@
+<!-- mixalous.gr - Scaffolding αρχικής σελίδας -->
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mixalous.gr - Βάλε τάξη στα οικονομικά σου</title>
+  <style>
+    body { font-family: sans-serif; margin: 0; padding: 0; background: #f8f8f8; }
+    header { background: #0d1b2a; color: white; padding: 20px; text-align: center; }
+    nav { background: #1b263b; color: white; display: flex; justify-content: center; gap: 30px; padding: 10px; }
+    nav a { color: white; text-decoration: none; }
+    .hero { background: #415a77; color: white; padding: 60px 20px; text-align: center; }
+    .hero h1 { margin-bottom: 20px; }
+    .cta { background: #e0e1dd; text-align: center; padding: 40px 20px; }
+    .cta button { background: #0d1b2a; color: white; padding: 15px 30px; border: none; font-size: 18px; cursor: pointer; }
+    footer { background: #1b263b; color: white; text-align: center; padding: 15px; }
+    .powered { font-size: 12px; color: #ddd; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>mixalous.gr</h1>
+    <p>Το site που βάζει τάξη στα οικονομικά σου, χωρίς φούμαρα.</p>
+  </header>
+
+  <nav>
+    <a href="#plan">Πλάνο Χρεών</a>
+    <a href="#budget">Οικογενειακό Budget</a>
+    <a href="#tools">Εργαλεία</a>
+    <a href="#blog">Ο Μιχάλος λέει...</a>
+  </nav>
+
+  <section class="hero">
+    <h1>Φτιάξε τώρα το δικό σου πλάνο αποπληρωμής</h1>
+    <p>Με βάση τα έσοδα, τα χρέη και τις ανάγκες σου.</p>
+    <p class="powered">Powered by ChatGPT logic</p>
+  </section>
+
+  <section class="cta">
+    <p>Ξεκίνα με 3 βήματα:</p>
+    <button onclick="location.href='plan.html'">Φτιάξε το Πλάνο σου ➔</button>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 mixalous.gr - Made για την Ελλάδα, χωρίς φίλτρα.</p>
+    <p class="powered">AI logic support by ChatGPT | Σχεδίαση: Τάσος</p>
+  </footer>
+
+</body>
+</html>
