@@ -3,40 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <title>Η Μιχαλού σου βγάζει πλάνο</title>
   <style>
     body { font-family: sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
-    .container { max-width: 700px; margin: 40px auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+    .container { max-width: 800px; margin: 40px auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
     h1, h2, h3 { text-align: center; color: #2c3e50; }
     label { display: block; margin-top: 15px; font-weight: bold; }
-    input[type="number"], input[type="text"], select { width: 100%; padding: 10px; font-size: 16px; margin-top: 5px; }
+    input[type="number"], input[type="text"], select, textarea { width: 100%; padding: 10px; font-size: 16px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; }
     button { margin-top: 20px; background: #0d1b2a; color: white; border: none; padding: 15px; width: 100%; font-size: 18px; cursor: pointer; border-radius: 5px; }
     .result { background: #e0e1dd; padding: 20px; margin-top: 30px; border-radius: 8px; font-size: 18px; }
     .step { display: none; }
     .active { display: block; }
     .nav-buttons { display: flex; justify-content: space-between; margin-top: 20px; }
-    .nav-buttons button { width: 48%; } .header-image { text-align: center; margin-bottom: 20px; }
+    .nav-buttons button { width: 48%; }
+    .header-image { text-align: center; margin-bottom: 20px; }
     .header-image img {
-      width: 300px;
+      width: 250px;
       max-width: 100%;
       display: block;
       margin: 0 auto;
-      border-radius: 8px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      filter: drop-shadow(0 0 8px rgba(0,0,0,0.2));
+      border-radius: 50%;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      filter: drop-shadow(0 0 6px rgba(0,0,0,0.15));
     }
+    .section-title { font-size: 20px; margin-top: 30px; color: #0d1b2a; border-bottom: 2px solid #ccc; padding-bottom: 5px; }
+    .checkbox-group label { font-weight: normal; display: block; margin-top: 5px; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header-image">
-      <img src="https://github.com/deadpoetxxx/mixalou/raw/main/mixalou.jpg?v=2" alt="Η Μιχαλού κρατάει τα λεφτά">
+      <img src="https://github.com/deadpoetxxx/mixalou/raw/main/mixalou.jpg?v=3" alt="Η Μιχαλού κρατάει τα λεφτά">
     </div>
     <h1>Η Μιχαλού σου βγάζει πλάνο</h1>
 
     <div class="step active" id="step1">
-      <label>Πόσα φέρνεις στο σπίτι σταθερά από τη δουλειά κάθε μήνα; (€)</label>
-      <input type="number" id="incomeFixed">
+      <div class="section-title">ΜΕΡΟΣ 1: ΕΙΣΟΔΗΜΑ</div>
+      <label>Ποιο είναι το συνολικό μηνιαίο καθαρό σου εισόδημα (€);</label>
+      <input type="number" id="income">
+
+      <label>Πόσες είναι οι πηγές εισοδήματός σου;</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox"> Μισθός</label>
+        <label><input type="checkbox"> Ελεύθερο επάγγελμα</label>
+        <label><input type="checkbox"> Ενοίκια</label>
+        <label><input type="checkbox"> Μερίσματα/επενδύσεις</label>
+        <label><input type="checkbox"> Άλλο: <input type="text"></label>
+      </div>
+
+      <label>Πόσα άτομα εξαρτώνται οικονομικά από εσένα;</label>
+      <input type="number" id="dependents">
+
       <div class="nav-buttons">
         <button onclick="resetSteps()">Αρχή</button>
         <button onclick="nextStep(2)">Επόμενο</button>
@@ -44,8 +61,32 @@
     </div>
 
     <div class="step" id="step2">
-      <label>Υπάρχει και κανένα τυχερό (π.χ. πεθερά, λαχείο); (€)</label>
-      <input type="number" id="incomeExtra">
+      <div class="section-title">ΜΕΡΟΣ 2: ΕΞΟΔΑ - ΚΑΤΟΙΚΙΑ</div>
+      <label>Πού μένεις;</label>
+      <select>
+        <option>Μόνος/η</option>
+        <option>Με σύντροφο</option>
+        <option>Με συγκατοίκους</option>
+        <option>Με γονείς</option>
+      </select>
+
+      <label>Κατοικία:</label>
+      <select>
+        <option>Ενοικιαζόμενη</option>
+        <option>Ιδιοκατοίκηση με δάνειο</option>
+        <option>Ιδιοκατοίκηση χωρίς δάνειο</option>
+      </select>
+
+      <label>Μηνιαίο ενοίκιο ή δόση δανείου (€)</label>
+      <input type="number" id="housingCost">
+
+      <label>Σκέψεις για αλλαγή κατοικίας;</label>
+      <select>
+        <option>Ναι</option>
+        <option>Όχι</option>
+        <option>Δεν ξέρω ακόμα</option>
+      </select>
+
       <div class="nav-buttons">
         <button onclick="nextStep(1)">Προηγούμενο</button>
         <button onclick="nextStep(3)">Επόμενο</button>
@@ -53,22 +94,45 @@
     </div>
 
     <div class="step" id="step3">
-      <p id="totalIncomeText"></p>
+      <div class="section-title">ΜΕΤΑΚΙΝΗΣΗ</div>
+      <label>Πού μένεις (περιοχή ή ΤΚ);</label>
+      <input type="text">
+      <label>Πού εργάζεσαι (περιοχή ή ΤΚ);</label>
+      <input type="text">
+      <label>Με ποιο μέσο πηγαίνεις στη δουλειά;</label>
+      <select>
+        <option>Ι.Χ.</option>
+        <option>Μηχανάκι</option>
+        <option>ΜΜΜ</option>
+        <option>Με τα πόδια/ποδήλατο</option>
+        <option>Άλλο</option>
+      </select>
+      <label>Κόστος μετακίνησης εβδομαδιαία (€)</label>
+      <input type="number">
+
       <div class="nav-buttons">
         <button onclick="nextStep(2)">Προηγούμενο</button>
-        <button onclick="nextStep(4)">Πάμε να δούμε τι τρως</button>
+        <button onclick="nextStep(4)">Επόμενο</button>
       </div>
     </div>
 
     <div class="step" id="step4">
-      <label>Ενοίκιο (€)</label><input type="number" id="rent">
-      <label>Ρεύμα (€)</label><input type="number" id="electricity">
-      <label>Νερό (€)</label><input type="number" id="water">
-      <label>Κοινόχρηστα (€)</label><input type="number" id="utilities">
-      <label>Τηλέφωνο/Ίντερνετ (€)</label><input type="number" id="internet">
-      <label>Φροντιστήρια / Δραστηριότητες (€)</label><input type="number" id="kidsActivities">
-      <label>Ασφάλειες (μηνιαίος υπολογισμός) (€)</label><input type="number" id="insurance">
-      <label>Τέλη Κυκλοφορίας (μηνιαίος υπολογισμός) (€)</label><input type="number" id="carFees">
+      <div class="section-title">ΤΡΟΦΙΜΑ & ΑΓΟΡΕΣ</div>
+      <label>Μηνιαίο κόστος για τρόφιμα (€)</label>
+      <input type="number">
+      <label>Πόσες φορές την εβδομάδα παραγγέλνεις ή τρως έξω;</label>
+      <select>
+        <option>0–1</option>
+        <option>2–3</option>
+        <option>4+</option>
+      </select>
+      <label>Μαγειρεύεις στο σπίτι;</label>
+      <select>
+        <option>Ναι</option>
+        <option>Όχι</option>
+        <option>Μερικές φορές</option>
+      </select>
+
       <div class="nav-buttons">
         <button onclick="nextStep(3)">Προηγούμενο</button>
         <button onclick="nextStep(5)">Επόμενο</button>
@@ -76,74 +140,44 @@
     </div>
 
     <div class="step" id="step5">
-      <label>Τι χρωστάς και σε ποιους, παιδί μου;</label>
-      <label>Δάνειο Τράπεζας (ΜΗΝΙΑΙΑ ΔΟΣΗ) (€)</label><input type="number" id="loanBank">
-      <label>Πιστωτική Κάρτα (ΜΗΝΙΑΙΑ ΔΟΣΗ) (€)</label><input type="number" id="creditCard">
-      <label>Εφορία (ΜΗΝΙΑΙΑ ΔΟΣΗ ή ΡΥΘΜΙΣΗ) (€)</label><input type="number" id="taxes">
-      <label>Άλλοι (π.χ. συγγενείς, φίλοι - ΜΗΝΙΑΙΑ) (€)</label><input type="number" id="others">
+      <div class="section-title">ΧΡΕΗ</div>
+      <label>Πιστωτική Κάρτα (υπόλοιπο σε €)</label>
+      <input type="number">
+      <label>Δάνειο (υπόλοιπο σε €)</label>
+      <input type="number">
+      <label>Εφορία / Ρυθμίσεις (€)</label>
+      <input type="number">
+
+      <label>Πληρώνεις το ελάχιστο ή πλήρες ποσό κάθε μήνα;</label>
+      <select>
+        <option>Ελάχιστο</option>
+        <option>Πλήρες</option>
+      </select>
+
       <div class="nav-buttons">
         <button onclick="nextStep(4)">Προηγούμενο</button>
-        <button onclick="calculatePlan()">Ρώτα τη Μιχαλού</button>
+        <button onclick="nextStep(6)">Τέλος</button>
       </div>
     </div>
 
-    <div class="result" id="result" style="display:none;"></div>
+    <div class="step" id="step6">
+      <div class="result">
+        <h3>🎯 Είσαι έτοιμος/η για το Πλάνο Μιχαλούς</h3>
+        <p>Τώρα που ξέρουμε τι φέρνεις, τι τρως και τι χρωστάς... ήρθε η ώρα να φτιάξουμε πλάνο 👀</p>
+        <button onclick="alert('Έρχεται υπολογιστικό πλάνο με στρατηγικές αποπληρωμής, savings plan και πλάνο καθημερινότητας! 🎉')">Προχώρα στο πλάνο ➜</button>
+      </div>
+    </div>
   </div>
 
   <script>
     function nextStep(step) {
       document.querySelectorAll('.step').forEach(div => div.classList.remove('active'));
       document.getElementById('step' + step).classList.add('active');
-      if (step === 3) {
-        const total = (parseFloat(document.getElementById('incomeFixed').value || 0) + parseFloat(document.getElementById('incomeExtra').value || 0)).toFixed(2);
-        document.getElementById('totalIncomeText').innerText = `Τα κουκιά είναι ${total}€ το μήνα. Μη μου πεις ότι δεν ήξερες...`;
-      }
     }
 
     function resetSteps() {
       document.querySelectorAll('.step').forEach(div => div.classList.remove('active'));
       document.getElementById('step1').classList.add('active');
-      document.getElementById('result').style.display = 'none';
-    }
-
-    function calculatePlan() {
-      const income = parseFloat(document.getElementById('incomeFixed').value || 0) + parseFloat(document.getElementById('incomeExtra').value || 0);
-      const rent = parseFloat(document.getElementById('rent').value || 0);
-      const electricity = parseFloat(document.getElementById('electricity').value || 0);
-      const water = parseFloat(document.getElementById('water').value || 0);
-      const utilities = parseFloat(document.getElementById('utilities').value || 0);
-      const internet = parseFloat(document.getElementById('internet').value || 0);
-      const kids = parseFloat(document.getElementById('kidsActivities').value || 0);
-      const insurance = parseFloat(document.getElementById('insurance').value || 0);
-      const carFees = parseFloat(document.getElementById('carFees').value || 0);
-
-      const loanBank = parseFloat(document.getElementById('loanBank').value || 0);
-      const creditCard = parseFloat(document.getElementById('creditCard').value || 0);
-      const taxes = parseFloat(document.getElementById('taxes').value || 0);
-      const others = parseFloat(document.getElementById('others').value || 0);
-
-      const debt = loanBank + creditCard + taxes + others;
-      const totalExpenses = rent + electricity + water + utilities + internet + kids + insurance + carFees + debt;
-      const leftover = income - totalExpenses;
-
-      const result = document.getElementById('result');
-      result.style.display = 'block';
-      result.innerHTML = `
-        <h3>Πλάνο Μιχαλούς</h3>
-        <p><strong>Σύνολο Εισοδήματος:</strong> ${income.toFixed(2)} €</p>
-        <p><strong>Σύνολο Εξόδων:</strong> ${totalExpenses.toFixed(2)} €</p>
-        <p><strong>Υπόλοιπο για τα "άλλα":</strong> ${leftover.toFixed(2)} €</p>
-        <h4>Η Μιχαλού προτείνει:</h4>
-        <ul>
-          <li>Σούπερ Μάρκετ: ${(leftover * 0.35).toFixed(2)} €</li>
-          <li>Καύσιμα / Μετακίνηση: ${(leftover * 0.20).toFixed(2)} €</li>
-          <li>Ρούχα / Είδη Σπιτιού: ${(leftover * 0.15).toFixed(2)} €</li>
-          <li>Διασκέδαση: ${(leftover * 0.10).toFixed(2)} €</li>
-          <li>Αποταμίευση (ναι, ναι!): ${(leftover * 0.20).toFixed(2)} €</li>
-        </ul>
-        <p><em>💡 Tip της Μιχαλούς: Διάλεξε προϊόντα ιδιωτικής ετικέτας – εξοικονομείς έως και 20% στα ψώνια σου. Πες της Μιχαλούς πως σ’ το είπα!</em></p>
-      `;
-      nextStep(6);
     }
   </script>
 </body>
