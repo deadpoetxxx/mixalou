@@ -6,14 +6,16 @@
   <title>Η Μιχαλού σου βγάζει πλάνο</title>
   <style>
     body { font-family: sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
-    .container { max-width: 800px; margin: 40px auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+    .container { max-width: 900px; margin: 40px auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
     h1, h2 { text-align: center; color: #2c3e50; }
     label { display: block; margin-top: 15px; font-weight: bold; }
     input[type="number"], input[type="text"] { width: 100%; padding: 10px; font-size: 16px; margin-top: 5px; }
+    select { width: 100%; padding: 10px; font-size: 16px; margin-top: 5px; }
     button { margin-top: 20px; background: #0d1b2a; color: white; border: none; padding: 15px; width: 100%; font-size: 18px; cursor: pointer; border-radius: 5px; }
     .result { background: #e0e1dd; padding: 20px; margin-top: 30px; border-radius: 8px; font-size: 18px; }
-    .debt-entry { display: flex; gap: 10px; margin-top: 10px; }
-    .debt-entry input { flex: 1; }
+    .debt-entry, .expense-entry { display: flex; gap: 10px; margin-top: 10px; align-items: center; }
+    .debt-entry input, .expense-entry input[type="text"], .expense-entry input[type="number"] { flex: 1; }
+    .expense-entry label { font-weight: normal; font-size: 14px; }
     table { width: 100%; margin-top: 20px; border-collapse: collapse; }
     th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
     th { background-color: #ddd; }
@@ -23,20 +25,29 @@
   <div class="container">
     <h1>Η Μιχαλού σου βγάζει πλάνο</h1>
 
-    <label>Εισόδημα (σύνολο οικογένειας €):</label>
-    <input type="number" id="income" placeholder="π.χ. 3000">
+    <label>Εισόδημα Δικό σου (€):</label>
+    <input type="number" id="income1" placeholder="π.χ. 1800">
 
-    <label>Μηνιαία Πάγια Έξοδα (€):</label>
-    <input type="number" id="expenses" placeholder="π.χ. 1600">
+    <label>Εισόδημα Συζύγου (€):</label>
+    <input type="number" id="income2" placeholder="π.χ. 1300">
+
+    <h2>Έξοδα</h2>
+    <div id="expenses"></div>
+    <button type="button" onclick="addExpense()">+ Προσθήκη Κατηγορίας Εξόδου</button>
 
     <h2>Οφειλές</h2>
     <div id="debts"></div>
     <button type="button" onclick="addDebt()">+ Προσθήκη Οφειλής</button>
 
-    <label for="savings">Προτεινόμενη Αποταμίευση (€):</label>
-    <input type="number" id="savings" placeholder="π.χ. 150">
+    <label for="savingsPlan">Πλάνο Αποταμίευσης:</label>
+    <select id="savingsPlan">
+      <option value="0">Καθόλου</option>
+      <option value="0.05">Μικρή (5%)</option>
+      <option value="0.10">Μέτρια (10%)</option>
+      <option value="0.20">Μεγάλη (20%)</option>
+    </select>
 
-    <button onclick="calculateDetailedPlan()">Υπολόγισε το πλάνο</button>
+    <button onclick="calculateFullPlan()">Υπολόγισε το πλάνο</button>
 
     <div class="result" id="result" style="display:none;"></div>
   </div>
@@ -53,14 +64,45 @@
       container.appendChild(div);
     }
 
-    function calculateDetailedPlan() {
-      const income = parseFloat(document.getElementById('income').value);
-      const expenses = parseFloat(document.getElementById('expenses').value);
-      const savings = parseFloat(document.getElementById('savings').value);
+    function addExpense() {
+      const container = document.getElementById('expenses');
+      const div = document.createElement('div');
+      div.className = 'expense-entry';
+      div.innerHTML = `
+        <input type="text" placeholder="Κατηγορία (π.χ. Σούπερ Μάρκετ)" class="expense-name">
+        <input type="number" placeholder="Ποσό (€)" class="expense-amount">
+        <label><input type="checkbox" class="expense-optional"> Προαιρετικό</label>
+      `;
+      container.appendChild(div);
+    }
+
+    function calculateFullPlan() {
+      const income1 = parseFloat(document.getElementById('income1').value);
+      const income2 = parseFloat(document.getElementById('income2').value);
+      const savingsPercent = parseFloat(document.getElementById('savingsPlan').value);
+      const totalIncome = (income1 || 0) + (income2 || 0);
+      const savings = totalIncome * savingsPercent;
+
+      const expenseNames = document.querySelectorAll('.expense-name');
+      const expenseAmounts = document.querySelectorAll('.expense-amount');
+      const expenseOptionals = document.querySelectorAll('.expense-optional');
+      let totalExpenses = 0;
+      let optionalSuggestions = [];
+
+      for (let i = 0; i < expenseAmounts.length; i++) {
+        const name = expenseNames[i].value || "(χωρίς όνομα)";
+        const amount = parseFloat(expenseAmounts[i].value);
+        const isOptional = expenseOptionals[i].checked;
+        if (!isNaN(amount)) {
+          totalExpenses += amount;
+          if (isOptional) {
+            optionalSuggestions.push({ name, amount });
+          }
+        }
+      }
+
       const debtNames = document.querySelectorAll('.debt-name');
       const debtAmounts = document.querySelectorAll('.debt-amount');
-      const resultDiv = document.getElementById('result');
-
       let debts = [];
       for (let i = 0; i < debtNames.length; i++) {
         const name = debtNames[i].value;
@@ -70,16 +112,27 @@
         }
       }
 
-      if (isNaN(income) || isNaN(expenses) || isNaN(savings) || income <= 0 || expenses < 0 || savings < 0 || debts.length === 0) {
+      const resultDiv = document.getElementById('result');
+      if (totalIncome <= 0 || debts.length === 0) {
         resultDiv.style.display = 'block';
-        resultDiv.innerHTML = '📌 Συμπλήρωσε σωστά όλα τα πεδία και τουλάχιστον μία οφειλή.';
+        resultDiv.innerHTML = '📌 Συμπλήρωσε σωστά τα εισοδήματα και τουλάχιστον μία οφειλή.';
         return;
       }
 
-      const available = income - expenses - savings;
+      const available = totalIncome - totalExpenses - savings;
       if (available <= 0) {
+        let html = '⚠️ Δεν περισσεύουν χρήματα για αποπληρωμή χρεών.<br><br>';
+        if (optionalSuggestions.length > 0) {
+          html += '💡 Η Μιχαλού προτείνει να μειώσεις προαιρετικά έξοδα όπως:<ul>';
+          optionalSuggestions.forEach(o => {
+            html += `<li>${o.name} – ${o.amount.toFixed(2)}€</li>`;
+          });
+          html += '</ul>Για να περισσέψουν χρήματα για τα χρέη σου.';
+        } else {
+          html += 'Δεν εντοπίστηκαν προαιρετικά έξοδα για περικοπή.';
+        }
+        resultDiv.innerHTML = html;
         resultDiv.style.display = 'block';
-        resultDiv.innerHTML = '⚠️ Δεν περισσεύουν χρήματα για αποπληρωμή χρεών. Μείωσε έξοδα ή αποταμίευση.';
         return;
       }
 
@@ -94,7 +147,9 @@
         });
       });
 
-      let html = `💡 Διαθέσιμα για αποπληρωμή: <strong>${available.toFixed(2)}€</strong> το μήνα.<br><br>`;
+      let html = `📊 Σύνολο Εισοδήματος: <strong>${totalIncome.toFixed(2)}€</strong><br>`;
+      html += `💸 Έξοδα: <strong>${totalExpenses.toFixed(2)}€</strong> | 💾 Αποταμίευση: <strong>${savings.toFixed(2)}€</strong><br>`;
+      html += `💰 Διαθέσιμα για αποπληρωμή: <strong>${available.toFixed(2)}€</strong> το μήνα.<br><br>`;
       html += `<table><tr><th>Οφειλή</th><th>Ποσό (€)</th><th>Μήνες</th><th>Μηνιαία Πληρωμή (€)</th></tr>`;
       plan.forEach(row => {
         html += `<tr><td>${row.name}</td><td>${row.amount}</td><td>${row.months}</td><td>${row.monthly}</td></tr>`;
@@ -107,4 +162,3 @@
   </script>
 </body>
 </html>
-
