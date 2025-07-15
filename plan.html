@@ -150,15 +150,35 @@
         </div>
       </div>
 
-      <div class="step" id="step5">
-        <label>Τι χρωστάς και σε ποιους, παιδί μου;</label>
-        <label>Δάνειο Τράπεζας (ΜΗΝΙΑΙΑ ΔΟΣΗ) (€)</label><input type="number" id="loanBank">
-        <label>Πιστωτική Κάρτα (ΜΗΝΙΑΙΑ ΔΟΣΗ) (€)</label><input type="number" id="creditCard">
-        <label>Εφορία (ΜΗΝΙΑΙΑ ΔΟΣΗ ή ΡΥΘΜΙΣΗ) (€)</label><input type="number" id="taxes">
-        <label>Άλλοι (π.χ. συγγενείς, φίλοι - ΜΗΝΙΑΙΑ) (€)</label><input type="number" id="others">
-        <div class="nav-buttons">
-          <button onclick="nextStep(4)">Προηγούμενο</button>
-           <button onclick="nextStep(6)">Προηγούμενο</button>
+     <div class="step" id="step5">
+  <label>Τι χρωστάς και σε ποιους, παιδί μου;</label>
+
+  <label>Δάνειο Τράπεζας – Μηνιαία Δόση (€)</label>
+  <input type="number" id="loanBank">
+  <label>Συνολικό Οφειλόμενο Δάνειο (€)</label>
+  <input type="number" id="loanBank_total">
+
+  <label>Πιστωτική Κάρτα – Μηνιαία Πληρωμή (€)</label>
+  <input type="number" id="creditCard">
+  <label>Συνολικό Υπόλοιπο Πιστωτικής (€)</label>
+  <input type="number" id="creditCard_total">
+
+  <label>Εφορία – Μηνιαία Δόση (€)</label>
+  <input type="number" id="taxes">
+  <label>Συνολική Οφειλή στην Εφορία (€)</label>
+  <input type="number" id="taxes_total">
+
+  <label>Άλλοι (π.χ. συγγενείς) – Μηνιαία Δόση (€)</label>
+  <input type="number" id="others">
+  <label>Συνολική Οφειλή σε Άλλους (€)</label>
+  <input type="number" id="others_total">
+
+  <div class="nav-buttons">
+    <button onclick="nextStep(4)">Προηγούμενο</button>
+    <button onclick="nextStep(6)">Επόμενο</button>
+  </div>
+</div>
+
       
         </div>
       </div>
@@ -226,6 +246,10 @@ function resetSteps() {
       const debt = loanBank + creditCard + taxes + others;
       const totalExpenses = rent + electricity + water + utilities + internet + kids + insurance + carFees + cigarettes + debt;
       const leftover = income - totalExpenses;
+const loanBank_total = parseFloat(document.getElementById('loanBank_total')?.value || 0);
+const creditCard_total = parseFloat(document.getElementById('creditCard_total')?.value || 0);
+const taxes_total = parseFloat(document.getElementById('taxes_total')?.value || 0);
+const others_total = parseFloat(document.getElementById('others_total')?.value || 0);
 
       const result = document.getElementById('result');
       result.style.display = 'block';
@@ -239,26 +263,58 @@ function resetSteps() {
         suggestion = '⚠️ Προσοχή! Μόνο τα ελάχιστα για αποφυγή κυρώσεων. Σκέψου βοήθεια ή αναδιάρθρωση.';
       }
 
-      result.innerHTML = `
-        <h3>📊 Πλάνο Μιχαλούς</h3>
-        <p><strong>Σύνολο Εισοδήματος:</strong> €${income.toFixed(2)}</p>
-        <p><strong>Σύνολο Εξόδων:</strong> €${totalExpenses.toFixed(2)}</p>
-        <p><strong>Υπόλοιπο:</strong> €${leftover.toFixed(2)}</p>
-        <p><strong>Προτεινόμενο Πλάνο:</strong><br>${suggestion}</p>
-        <h4>Κατανομή Υπολοίπου:</h4>
-        <ul>
-          <li>Σούπερ Μάρκετ: €${(leftover * 0.35).toFixed(2)}</li>
-          <li>Καύσιμα / Μετακίνηση: €${(leftover * 0.20).toFixed(2)}</li>
-          <li>Ρούχα / Είδη Σπιτιού: €${(leftover * 0.15).toFixed(2)}</li>
-          <li>Διασκέδαση: €${(leftover * 0.10).toFixed(2)}</li>
-          <li>Αποταμίευση: €${(leftover * 0.20).toFixed(2)}</li>
-        </ul>
-        ${cigarettes > 0 ? `<p style="color:red;"><strong>💣 Κόψε το τσιγάρο – εξοικονομείς +ζεις!</strong></p>` : ''}
-        <p><em>💡 Tip: Προτίμησε προϊόντα ιδιωτικής ετικέτας – εξοικονόμηση έως 20%.</em></p>
-      `;
-      window.scrollTo({ top: result.offsetTop, behavior: 'smooth' });
-    }
-  
+     result.innerHTML = `
+  <h3>📊 Πλάνο Μιχαλούς</h3>
+  <p><strong>Σύνολο Εισοδήματος:</strong> €${income.toFixed(2)}</p>
+  <p><strong>Σύνολο Εξόδων:</strong> €${totalExpenses.toFixed(2)}</p>
+  <p><strong>Υπόλοιπο:</strong> €${leftover.toFixed(2)}</p>
+  <p><strong>Προτεινόμενο Πλάνο:</strong><br>${suggestion}</p>
+  <h4>Κατανομή Υπολοίπου:</h4>
+  <ul>
+    <li>Σούπερ Μάρκετ: €${(leftover * 0.35).toFixed(2)}</li>
+    <li>Καύσιμα / Μετακίνηση: €${(leftover * 0.20).toFixed(2)}</li>
+    <li>Ρούχα / Είδη Σπιτιού: €${(leftover * 0.15).toFixed(2)}</li>
+    <li>Διασκέδαση: €${(leftover * 0.10).toFixed(2)}</li>
+    <li>Αποταμίευση: €${(leftover * 0.20).toFixed(2)}</li>
+  </ul>
+  ${cigarettes > 0 ? `<p style="color:red;"><strong>💣 Κόψε το τσιγάρο – εξοικονομείς +ζεις!</strong></p>` : ''}
+  <p><em>💡 Tip: Προτίμησε προϊόντα ιδιωτικής ετικέτας – εξοικονόμηση έως 20%.</em></p>
+`;
+
+// === Αυτά μπαίνουν ΜΕΣΑ στη calculatePlan(), αμέσως μετά ===
+
+const monthsToRepay = (total, monthly) => {
+  if (monthly <= 0) return Infinity;
+  return Math.ceil(total / monthly);
+};
+
+let debtInsights = '<h4>📅 Πρόβλεψη Χρεών:</h4><ul>';
+
+const entries = [
+  { name: "Δάνειο Τράπεζας", total: loanBank_total, monthly: loanBank },
+  { name: "Πιστωτική Κάρτα", total: creditCard_total, monthly: creditCard },
+  { name: "Εφορία", total: taxes_total, monthly: taxes },
+  { name: "Άλλοι", total: others_total, monthly: others }
+];
+
+entries.forEach(({ name, total, monthly }) => {
+  if (total <= 0) return;
+  const months = monthsToRepay(total, monthly);
+  if (months === Infinity) {
+    debtInsights += `<li>❌ <strong>${name}:</strong> Δεν πληρώνεται. Ξεκίνα με έστω €50/μήνα αλλιώς θα το κουβαλάς για πάντα.</li>`;
+  } else if (months > 60) {
+    debtInsights += `<li>⏳ <strong>${name}:</strong> Σε ${months} μήνες θα ξεχρεώσεις. Δες μήπως το αυξήσεις λίγο.</li>`;
+  } else {
+    debtInsights += `<li>✅ <strong>${name}:</strong> Τέλος σε ${months} μήνες – keep it up!</li>`;
+  }
+});
+
+debtInsights += '</ul>';
+result.innerHTML += debtInsights;
+
+window.scrollTo({ top: result.offsetTop, behavior: 'smooth' });
+
+
   </script>
 </body>
 </html>
