@@ -88,52 +88,39 @@
           <button onclick="calculatePlan()">Ρώτα τη Μιχαλού</button>
         </div>
       </div>
+      <div class="step active" id="step6">
+      <h3>Πώς θέλεις να κινηθεί η Μιχαλού για σένα;</h3>
+      <label><input type="radio" name="strategy" value="fast" checked> Αποπληρωμή όσο πιο γρήγορα γίνεται</label>
+      <label><input type="radio" name="strategy" value="balanced"> Συντηρητική διαχείριση</label>
+      <label><input type="radio" name="strategy" value="minimal"> Ελάχιστα, απλά για να μην μπεις φυλακή</label>
+      <div class="nav-buttons">
+        <button onclick="nextStep(5)">Προηγούμενο</button>
+        <button onclick="calculatePlan()">Ρώτα τη Μιχαλού</button>
+      </div>
     </div>
 
     <div class="result" id="result" style="display:none;"></div>
   </div>
 
   <script>
-    function startScenario(type) {
-      document.getElementById('scenarioSelector').style.display = 'none';
-      document.getElementById('plannerSteps').classList.remove('hidden');
-
-      if (type === 'debt') {
-        alert("Έρχεται σύντομα η δυνατότητα αποπληρωμής χρέους! Προς το παρόν πάμε με πλάνο εξόδων.");
-      }
-    }
-
-    function nextStep(step) {
-      document.querySelectorAll('.step').forEach(div => div.classList.remove('active'));
-      document.getElementById('step' + step).classList.add('active');
-      if (step === 3) {
-        const total = (parseFloat(document.getElementById('incomeFixed').value || 0) + parseFloat(document.getElementById('incomeExtra').value || 0)).toFixed(2);
-        document.getElementById('totalIncomeText').innerText = `Τα κουκιά είναι ${total}€ το μήνα. Μη μου πεις ότι δεν ήξερες...`;
-      }
-    }
-
-    function resetSteps() {
-      document.querySelectorAll('.step').forEach(div => div.classList.remove('active'));
-      document.getElementById('step1').classList.add('active');
-      document.getElementById('result').style.display = 'none';
-    }
-
     function calculatePlan() {
-      const income = parseFloat(document.getElementById('incomeFixed').value || 0) + parseFloat(document.getElementById('incomeExtra').value || 0);
-      const rent = parseFloat(document.getElementById('rent').value || 0);
-      const electricity = parseFloat(document.getElementById('electricity').value || 0);
-      const water = parseFloat(document.getElementById('water').value || 0);
-      const utilities = parseFloat(document.getElementById('utilities').value || 0);
-      const internet = parseFloat(document.getElementById('internet').value || 0);
-      const kids = parseFloat(document.getElementById('kidsActivities').value || 0);
-      const insurance = parseFloat(document.getElementById('insurance').value || 0);
-      const carFees = parseFloat(document.getElementById('carFees').value || 0);
-      const cigarettes = parseFloat(document.getElementById('cigarettes').value || 0);
+      const income = parseFloat(document.getElementById('incomeFixed')?.value || 0) + parseFloat(document.getElementById('incomeExtra')?.value || 0);
+      const rent = parseFloat(document.getElementById('rent')?.value || 0);
+      const electricity = parseFloat(document.getElementById('electricity')?.value || 0);
+      const water = parseFloat(document.getElementById('water')?.value || 0);
+      const utilities = parseFloat(document.getElementById('utilities')?.value || 0);
+      const internet = parseFloat(document.getElementById('internet')?.value || 0);
+      const kids = parseFloat(document.getElementById('kidsActivities')?.value || 0);
+      const insurance = parseFloat(document.getElementById('insurance')?.value || 0);
+      const carFees = parseFloat(document.getElementById('carFees')?.value || 0);
+      const cigarettes = parseFloat(document.getElementById('cigarettes')?.value || 0);
 
-      const loanBank = parseFloat(document.getElementById('loanBank').value || 0);
-      const creditCard = parseFloat(document.getElementById('creditCard').value || 0);
-      const taxes = parseFloat(document.getElementById('taxes').value || 0);
-      const others = parseFloat(document.getElementById('others').value || 0);
+      const loanBank = parseFloat(document.getElementById('loanBank')?.value || 0);
+      const creditCard = parseFloat(document.getElementById('creditCard')?.value || 0);
+      const taxes = parseFloat(document.getElementById('taxes')?.value || 0);
+      const others = parseFloat(document.getElementById('others')?.value || 0);
+
+      const strategy = document.querySelector('input[name="strategy"]:checked')?.value || 'balanced';
 
       const debt = loanBank + creditCard + taxes + others;
       const totalExpenses = rent + electricity + water + utilities + internet + kids + insurance + carFees + cigarettes + debt;
@@ -141,23 +128,37 @@
 
       const result = document.getElementById('result');
       result.style.display = 'block';
+
+      let suggestion = '';
+      if (strategy === 'fast') {
+        suggestion = '💪 Επιθετικό πλάνο αποπληρωμής. Μειώνεις άλλα έξοδα και ξεχρεώνεις γρήγορα!';
+      } else if (strategy === 'balanced') {
+        suggestion = '📘 Ισορροπία ανάμεσα σε ανάγκες και αποπληρωμή. Προτείνεται διατήρηση σταθερών δόσεων και μέτρια αποταμίευση.';
+      } else {
+        suggestion = '⚠️ Προσοχή! Μόνο τα ελάχιστα για αποφυγή κυρώσεων. Σκέψου βοήθεια ή αναδιάρθρωση.';
+      }
+
       result.innerHTML = `
-        <h3>Πλάνο Μιχαλούς</h3>
-        <p><strong>Σύνολο Εισοδήματος:</strong> ${income.toFixed(2)} €</p>
-        <p><strong>Σύνολο Εξόδων:</strong> ${totalExpenses.toFixed(2)} €</p>
-        <p><strong>Υπόλοιπο για τα "άλλα":</strong> ${leftover.toFixed(2)} €</p>
-        <h4>Η Μιχαλού προτείνει:</h4>
+        <h3>📊 Πλάνο Μιχαλούς</h3>
+        <p><strong>Σύνολο Εισοδήματος:</strong> €${income.toFixed(2)}</p>
+        <p><strong>Σύνολο Εξόδων:</strong> €${totalExpenses.toFixed(2)}</p>
+        <p><strong>Υπόλοιπο:</strong> €${leftover.toFixed(2)}</p>
+        <p><strong>Προτεινόμενο Πλάνο:</strong><br>${suggestion}</p>
+        <h4>Κατανομή Υπολοίπου:</h4>
         <ul>
-          <li>Σούπερ Μάρκετ: ${(leftover * 0.35).toFixed(2)} €</li>
-          <li>Καύσιμα / Μετακίνηση: ${(leftover * 0.20).toFixed(2)} €</li>
-          <li>Ρούχα / Είδη Σπιτιού: ${(leftover * 0.15).toFixed(2)} €</li>
-          <li>Διασκέδαση: ${(leftover * 0.10).toFixed(2)} €</li>
-          <li>Αποταμίευση (ναι, ναι!): ${(leftover * 0.20).toFixed(2)} €</li>
+          <li>Σούπερ Μάρκετ: €${(leftover * 0.35).toFixed(2)}</li>
+          <li>Καύσιμα / Μετακίνηση: €${(leftover * 0.20).toFixed(2)}</li>
+          <li>Ρούχα / Είδη Σπιτιού: €${(leftover * 0.15).toFixed(2)}</li>
+          <li>Διασκέδαση: €${(leftover * 0.10).toFixed(2)}</li>
+          <li>Αποταμίευση: €${(leftover * 0.20).toFixed(2)}</li>
         </ul>
-        ${cigarettes > 0 ? `<p style="color:red;"><strong>💣 Καπνίζεις; Η Μιχαλού λέει: κόφ' τα να μη σε κόψει η ζωή και το πορτοφόλι μαζί!</strong></p>` : ''}
-        <p><em>💡 Tip της Μιχαλούς: Διάλεξε προϊόντα ιδιωτικής ετικέτας – εξοικονομείς έως και 20% στα ψώνια σου. Πες της Μιχαλούς πως σ’ το είπα!</em></p>
+        ${cigarettes > 0 ? `<p style="color:red;"><strong>💣 Κόψε το τσιγάρο – εξοικονομείς +ζεις!</strong></p>` : ''}
+        <p><em>💡 Tip: Προτίμησε προϊόντα ιδιωτικής ετικέτας – εξοικονόμηση έως 20%.</em></p>
       `;
+      window.scrollTo({ top: result.offsetTop, behavior: 'smooth' });
     }
   </script>
 </body>
 </html>
+
+   
