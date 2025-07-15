@@ -2,99 +2,218 @@
 <html lang="el">
 <head>
   <meta charset="UTF-8">
-  <title>Υπολογιστής Διαχείρισης Χρέους</title>
+  <title>Η Μιχαλού σε Βοηθάει</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
+      font-family: sans-serif;
+      background: #f0f8ff;
       padding: 20px;
       max-width: 600px;
       margin: auto;
     }
-    h2 {
-      text-align: center;
+    .step {
+      display: none;
     }
-    label {
+    .step.active {
       display: block;
-      margin-top: 10px;
-    }
-    input, select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      box-sizing: border-box;
     }
     button {
       margin-top: 20px;
-      padding: 10px;
-      width: 100%;
+      padding: 10px 20px;
       background-color: #1976d2;
       color: white;
       border: none;
       cursor: pointer;
     }
-    .result {
+    .navigation {
       margin-top: 20px;
-      padding: 15px;
-      background-color: #e0f7fa;
-      border: 1px solid #00796b;
+    }
+    .question {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
     }
   </style>
 </head>
 <body>
 
-  <h2>Εργαλείο Υπολογισμού & Διαχείρισης Χρέους</h2>
+  <h2>🧮 Η Μιχαλού σε Βοηθάει με τα Οικονομικά σου</h2>
 
-  <label>Μηνιαίο Εισόδημα (€):
-    <input type="number" id="income" required>
-  </label>
+  <form id="mihalouForm">
+    <!-- Step 1: Εισόδημα -->
+    <div class="step active">
+      <div class="question">Πόσα βγάζεις το μήνα σταθερά από μισθό;</div>
+      <input type="number" name="salary">
+      
+      <div class="question">Υπάρχουν έκτακτα έσοδα (π.χ. χαρτζιλίκι);</div>
+      <input type="number" name="extra_income">
 
-  <label>Πάγια Έξοδα (€):
-    <input type="number" id="expenses" required>
-  </label>
+      <div class="navigation">
+        <button type="button" onclick="nextStep()">Επόμενο</button>
+      </div>
+    </div>
 
-  <label>Συνολικό Χρέος (€):
-    <input type="number" id="debt" required>
-  </label>
+    <!-- Step 2: Έξοδα -->
+    <div class="step">
+      <div class="question">Πόσα δίνεις το μήνα για ενοίκιο;</div>
+      <input type="number" name="rent">
 
-  <label>Επιθυμητός Χρόνος Αποπληρωμής (σε μήνες):
-    <input type="number" id="months" required>
-  </label>
+      <div class="question">Πόσα για ρεύμα;</div>
+      <input type="number" name="electricity">
 
-  <button onclick="calculatePlan()">Υπολόγισε Πλάνο</button>
+      <div class="question">Πόσα για νερό;</div>
+      <input type="number" name="water">
 
-  <div class="result" id="output" style="display: none;"></div>
+      <div class="question">Πόσα για κοινόχρηστα;</div>
+      <input type="number" name="building_fees">
+
+      <div class="navigation">
+        <button type="button" onclick="prevStep()">Πίσω</button>
+        <button type="button" onclick="nextStep()">Επόμενο</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Χρέη -->
+    <div class="step">
+      <div class="question">Τι χρωστάς; Μπορείς να καταχωρίσεις συνολικό ποσό ή μηνιαία δόση:</div>
+      <label>Πιστωτικές:</label><input type="number" name="credit_cards">
+      <label>Δάνεια:</label><input type="number" name="loans">
+      <label>Εφορία:</label><input type="number" name="taxes">
+
+      <div class="navigation">
+        <button type="button" onclick="prevStep()">Πίσω</button>
+        <button type="button" onclick="nextStep()">Επόμενο</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Αποταμίευση -->
+    <div class="step">
+      <div class="question">Αποταμιεύεις κάθε μήνα; Αν ναι, πόσο;</div>
+      <input type="number" name="savings">
+
+      <div class="question">Έχεις ήδη αποταμιεύσεις; Πόσο περίπου;</div>
+      <input type="number" name="existing_savings">
+
+      <div class="navigation">
+        <button type="button" onclick="prevStep()">Πίσω</button>
+        <button type="button" onclick="nextStep()">Επόμενο</button>
+      </div>
+    </div>
+
+    <!-- Step 5: Οικονομικοί Στόχοι -->
+    <div class="step">
+      <div class="question">Ποιος είναι ο κύριος οικονομικός σου στόχος;</div>
+      <select name="goal">
+        <option value="debt">Ξεχρέωμα</option>
+        <option value="savings">Αποταμίευση για ταξίδι/σπίτι</option>
+        <option value="invest">Παθητικό εισόδημα</option>
+        <option value="lifestyle">Αλλαγή τρόπου ζωής</option>
+      </select>
+
+      <div class="navigation">
+        <button type="button" onclick="prevStep()">Πίσω</button>
+        <button type="button" onclick="nextStep()">Επόμενο</button>
+      </div>
+    </div>
+
+    <!-- Step 6: Ψυχολογία & παρακολούθηση -->
+    <div class="step">
+      <div class="question">Παρακολουθείς τα οικονομικά σου με κάποιο τρόπο;</div>
+      <select name="tracking">
+        <option value="excel">Excel</option>
+        <option value="app">Εφαρμογή</option>
+        <option value="manual">Χειρόγραφα</option>
+        <option value="none">Καθόλου</option>
+      </select>
+
+      <div class="question">Πώς νιώθεις όταν τα σκέφτεσαι;</div>
+      <select name="feeling">
+        <option value="calm">Ήρεμος/η</option>
+        <option value="anxious">Αγχωμένος/η</option>
+        <option value="indifferent">Αδιάφορος/η</option>
+      </select>
+
+      <div class="navigation">
+        <button type="button" onclick="prevStep()">Πίσω</button>
+        <button type="button" onclick="nextStep()">Επόμενο</button>
+      </div>
+    </div>
+
+    <!-- Step 7: Επιλογή στρατηγικής -->
+    <div class="step">
+      <div class="question">Πώς θέλεις να κινηθεί η Μιχαλού;</div>
+      <label><input type="radio" name="strategy" value="fast" checked> Αποπληρωμή όσο πιο γρήγορα γίνεται</label><br>
+      <label><input type="radio" name="strategy" value="balanced"> Συντηρητική διαχείριση (π.χ. σταθερές δόσεις)</label><br>
+      <label><input type="radio" name="strategy" value="minimal"> Ελάχιστα, μόνο για να μην μπω φυλακή</label>
+
+      <div class="navigation">
+        <button type="button" onclick="prevStep()">Πίσω</button>
+        <button type="submit">Ρώτα τη Μιχαλού</button>
+      </div>
+    </div>
+  </form>
+
+  <div id="result" style="margin-top:30px; display:none;"></div>
 
   <script>
-    function calculatePlan() {
-      const income = parseFloat(document.getElementById('income').value);
-      const expenses = parseFloat(document.getElementById('expenses').value);
-      const debt = parseFloat(document.getElementById('debt').value);
-      const months = parseInt(document.getElementById('months').value);
+    const steps = document.querySelectorAll(".step");
+    let currentStep = 0;
 
-      if (isNaN(income) || isNaN(expenses) || isNaN(debt) || isNaN(months) || months <= 0) {
-        alert("Συμπλήρωσε όλα τα πεδία σωστά!");
-        return;
-      }
-
-      const available = income - expenses;
-      const monthlyPayment = debt / months;
-
-      let message = `
-        <strong>Υπόλοιπο μετά τα πάγια έξοδα:</strong> €${available.toFixed(2)}<br>
-        <strong>Απαιτούμενη μηνιαία δόση:</strong> €${monthlyPayment.toFixed(2)}<br>
-      `;
-
-      if (monthlyPayment > available) {
-        message += `<strong style="color:red;">⚠️ Το υπόλοιπό σου δεν επαρκεί για το προτεινόμενο πλάνο.</strong>`;
-      } else {
-        message += `<strong style="color:green;">✅ Το πλάνο είναι εφικτό. Μπορείς να αποπληρώσεις το χρέος σε ${months} μήνες.</strong>`;
-      }
-
-      const outputDiv = document.getElementById('output');
-      outputDiv.innerHTML = message;
-      outputDiv.style.display = 'block';
+    function showStep(n) {
+      steps.forEach((step, index) => step.classList.toggle("active", index === n));
     }
+
+    function nextStep() {
+      if (currentStep < steps.length - 1) {
+        currentStep++;
+        showStep(currentStep);
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    }
+
+    document.getElementById("mihalouForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const form = new FormData(e.target);
+      const resultDiv = document.getElementById("result");
+
+      // Πλάνο υπολογισμού με απλό παράδειγμα
+      const income = Number(form.get("salary")) + Number(form.get("extra_income"));
+      const expenses = ["rent", "electricity", "water", "building_fees"]
+        .map(k => Number(form.get(k) || 0)).reduce((a, b) => a + b, 0);
+      const debts = ["credit_cards", "loans", "taxes"]
+        .map(k => Number(form.get(k) || 0)).reduce((a, b) => a + b, 0);
+      const available = income - expenses - debts;
+
+      const strategy = form.get("strategy");
+      let suggestion = "";
+
+      if (strategy === "fast") {
+        suggestion = "💪 Προτείνουμε αύξηση δόσεων για ταχύτερη αποπληρωμή.";
+      } else if (strategy === "balanced") {
+        suggestion = "📘 Ισορροπημένο πλάνο: σταθερές δόσεις, αποταμίευση 10-15%.";
+      } else {
+        suggestion = "⚠️ Προτείνουμε ελάχιστες πληρωμές για να μην υπάρξουν νομικά θέματα.";
+      }
+
+      resultDiv.innerHTML = `
+        <h3>Η Μιχαλού υπολόγισε:</h3>
+        <p><strong>Μηνιαίο υπόλοιπο:</strong> €${available.toFixed(2)}</p>
+        <p>${suggestion}</p>
+        <p>✍️ Επόμενο βήμα: Προσάρμοσε τις δαπάνες σου ή αύξησε το εισόδημά σου.</p>
+      `;
+      resultDiv.style.display = "block";
+      window.scrollTo(0, document.body.scrollHeight);
+    });
   </script>
 
 </body>
