@@ -112,30 +112,15 @@
       </div>
     </div>
 
-    <div class="step" id="step5">
+   <div class="step active" id="step5">
       <div class="section-title">5. ΑΠΟΤΕΛΕΣΜΑ</div>
       <div class="result">
         <h3>🎯 Πλάνο Μιχαλούς</h3>
         <div id="plan-results">
           <p>Αντέχεις; Πατάς και βλέπεις πλάνο 👇</p>
         </div>
-        <button onclick="alert('Έρχεται ο υπολογισμός...')">Υπολόγισε Πλάνο ➜</button>
-      </div>
-
-      <div class="nav-buttons">
-        <button onclick="nextStep(4)">Προηγούμενο</button>
-        <button onclick="resetSteps()">Ξεκίνα Από Την Αρχή</button>
-      </div>
-    </div>
-  </div>
- <div class="step" id="step5">
-      <div class="section-title">5. ΑΠΟΤΕΛΕΣΜΑ</div>
-      <div class="result">
-        <h3>🎯 Πλάνο Μιχαλούς</h3>
-        <div id="plan-results">
-          <p>Αντέχεις; Πατάς και βλέπεις πλάνο 👇</p>
-        </div>
-        <button onclick="calculatePlan()">Υπολόγισε Πλάνο ➜</button>
+        <button id="calculate-btn">Υπολόγισε Πλάνο ➜</button>
+        <div id="plan-tips" class="tips" style="display:none"></div>
       </div>
 
       <div class="nav-buttons">
@@ -157,36 +142,43 @@
     }
 
     function calculatePlan() {
-      const income = parseFloat(document.getElementById('income').value) || 0;
-      const dependents = parseInt(document.getElementById('dependents').value) || 0;
-      const rent = parseFloat(document.getElementById('rent').value) || 0;
-      const electricity = parseFloat(document.getElementById('electricity').value) || 0;
-      const water = parseFloat(document.getElementById('water').value) || 0;
-      const shared = parseFloat(document.getElementById('shared').value) || 0;
-      const internet = parseFloat(document.getElementById('internet').value) || 0;
-      const activities = parseFloat(document.getElementById('activities').value) || 0;
-      const insurance = parseFloat(document.getElementById('insurance').value) || 0;
-      const car_tax = parseFloat(document.getElementById('car_tax').value) || 0;
-      const smokes = parseFloat(document.getElementById('smokes').value) || 0;
-      const credit = parseFloat(document.getElementById('credit').value) || 0;
-      const loan = parseFloat(document.getElementById('loan').value) || 0;
-      const tax = parseFloat(document.getElementById('tax').value) || 0;
+      const income = parseFloat(document.getElementById('income')?.value) || 0;
+      const dependents = parseInt(document.getElementById('dependents')?.value) || 0;
+      const rent = parseFloat(document.getElementById('rent')?.value) || 0;
+      const electricity = parseFloat(document.getElementById('electricity')?.value) || 0;
+      const water = parseFloat(document.getElementById('water')?.value) || 0;
+      const shared = parseFloat(document.getElementById('shared')?.value) || 0;
+      const internet = parseFloat(document.getElementById('internet')?.value) || 0;
+      const activities = parseFloat(document.getElementById('activities')?.value) || 0;
+      const insurance = parseFloat(document.getElementById('insurance')?.value) || 0;
+      const car_tax = parseFloat(document.getElementById('car_tax')?.value) || 0;
+      const smokes = parseFloat(document.getElementById('smokes')?.value) || 0;
+      const credit = parseFloat(document.getElementById('credit')?.value) || 0;
+      const loan = parseFloat(document.getElementById('loan')?.value) || 0;
+      const tax = parseFloat(document.getElementById('tax')?.value) || 0;
 
       const totalExpenses = rent + electricity + water + shared + internet + activities + insurance + car_tax + smokes;
       const monthlyDebt = (credit + loan + tax) / 12;
       const remaining = income - totalExpenses - monthlyDebt;
 
-      let message = '';
+      let message = '', tips = '';
       if (remaining > 300) {
-        message = `Μπράβο σου! Μετά τις υποχρεώσεις, σου μένουν περίπου <b>${remaining.toFixed(2)}€</b> κάθε μήνα. Μπορείς να αποταμιεύσεις ή να επενδύσεις.`;
+        message = `Μπράβο σου! Μετά τις υποχρεώσεις, σου μένουν περίπου <b>${remaining.toFixed(2)}€</b> κάθε μήνα.`;
+        tips = `✅ Σκέψου αποταμίευση με στόχο 10-20% μηνιαίως.<br>✅ Ξεκίνα επενδύσεις μικρού ρίσκου (π.χ. προθεσμιακές, κρατικά ομόλογα).`;
       } else if (remaining > 0) {
         message = `Μετά τις υποχρεώσεις, σου απομένουν <b>${remaining.toFixed(2)}€</b>. Πρόσεχε λίγο τις συνήθειες και αναζήτησε έξυπνες λύσεις.`;
+        tips = `💡 Ξανακοίτα έξοδα όπως συνδρομές, take-out και καφέδες.<br>💡 Μια πρόχειρη αποταμίευση τύπου "κουμπαράς" βοηθάει.`;
       } else {
         message = `⚠️ Μετά τις υποχρεώσεις, <b>δεν φτάνουν</b> τα έσοδά σου! Λείπουν περίπου <b>${Math.abs(remaining).toFixed(2)}€</b>. Μάλλον ώρα για σοβαρή αναδιοργάνωση.`;
+        tips = `❗ Μίλα με τράπεζα για ρυθμίσεις δανείων/καρτών.<br>❗ Μείωσε μη-αναγκαία έξοδα όπως activities, τσιγάρα, delivery.`;
       }
 
       document.getElementById('plan-results').innerHTML = message;
+      document.getElementById('plan-tips').innerHTML = tips;
+      document.getElementById('plan-tips').style.display = 'block';
     }
+
+    document.getElementById('calculate-btn').addEventListener('click', calculatePlan);
   </script>
 </body>
 </html>
