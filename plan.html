@@ -134,58 +134,71 @@
   </div>
 
   <script>
-      function nextStep(step) {
-        document.querySelectorAll('.step').forEach(div => div.classList.remove('active'));
-        document.getElementById('step' + step).classList.add('active');
+    function nextStep(step) {
+      document.querySelectorAll('.step').forEach(div => div.classList.remove('active'));
+      document.getElementById('step' + step).classList.add('active');
+    }
+
+    function resetSteps() {
+      document.querySelectorAll('.step').forEach(div => div.classList.remove('active'));
+      document.getElementById('step1').classList.add('active');
+    }
+
+    function calculatePlan() {
+      const income = parseFloat(document.getElementById('income')?.value) || 0;
+      const dependents = parseInt(document.getElementById('dependents')?.value) || 0;
+      const rent = parseFloat(document.getElementById('rent')?.value) || 0;
+      const electricity = parseFloat(document.getElementById('electricity')?.value) || 0;
+      const water = parseFloat(document.getElementById('water')?.value) || 0;
+      const shared = parseFloat(document.getElementById('shared')?.value) || 0;
+      const internet = parseFloat(document.getElementById('internet')?.value) || 0;
+      const activities = parseFloat(document.getElementById('activities')?.value) || 0;
+      const insurance = parseFloat(document.getElementById('insurance')?.value) || 0;
+      const car_tax = parseFloat(document.getElementById('car_tax')?.value) || 0;
+      const smokes = parseFloat(document.getElementById('smokes')?.value) || 0;
+      const credit = parseFloat(document.getElementById('credit')?.value) || 0;
+      const loan = parseFloat(document.getElementById('loan')?.value) || 0;
+      const tax = parseFloat(document.getElementById('tax')?.value) || 0;
+
+      const fixedExpenses = rent + electricity + water + shared + internet;
+      const lifestyleExpenses = activities + insurance + car_tax + smokes;
+      const dependentCost = dependents * 150;
+      const monthlyDebt = credit * 0.04 + loan * 0.03 + tax * 0.02;
+      const totalExpenses = fixedExpenses + lifestyleExpenses + dependentCost + monthlyDebt;
+      const remaining = income - totalExpenses;
+
+      const breakdown = `
+        <h3>Αναλυτικό Πλάνο Μιχαλούς</h3>
+        <ul>
+          <li><b>Ανελαστικά έξοδα:</b> ${fixedExpenses.toFixed(2)}€</li>
+          <li><b>Έξοδα διαβίωσης/συνήθειες:</b> ${lifestyleExpenses.toFixed(2)}€</li>
+          <li><b>Κόστος εξαρτώμενων:</b> ${dependentCost.toFixed(2)}€</li>
+          <li><b>Χρέη (μηνιαία δόση):</b> ${monthlyDebt.toFixed(2)}€</li>
+          <li><b>Σύνολο υποχρεώσεων:</b> ${totalExpenses.toFixed(2)}€</li>
+          <li><b>Μένουν στο χέρι:</b> ${remaining.toFixed(2)}€</li>
+        </ul>`;
+
+      let summary = '', tips = '';
+      if (remaining > 300) {
+        summary = `Μπράβο σου! Είσαι σε καλή πορεία.`;
+        tips = `✅ Απόθεσε 10-20% το μήνα<br>✅ Μίλα με σύμβουλο για επενδύσεις<br>✅ Ξεκίνα ένα emergency fund`;
+      } else if (remaining > 0) {
+        summary = `Οριακά, αλλά τα βγάζεις πέρα.`;
+        tips = `💡 Κόψε delivery/καφέδες<br>💡 Κάνε ρεβιζιόν εξόδων ανά εβδομάδα<br>💡 Μείωσε συνδρομές και πολυτέλειες`;
+      } else {
+        summary = `Δεν φτάνουν τα έσοδα για να καλύψουν τα έξοδα.`;
+        tips = `❗ Μίλα με τράπεζες για ρύθμιση χρεών<br>❗ Μείωσε lifestyle έξοδα<br>❗ Ψάξε για έξτρα εισόδημα ή βοηθήματα`;
       }
 
-      function resetSteps() {
-        document.querySelectorAll('.step').forEach(div => div.classList.remove('active'));
-        document.getElementById('step1').classList.add('active');
-      }
+      document.getElementById('plan-results').innerHTML = breakdown + '<p><strong>' + summary + '</strong></p>';
+      document.getElementById('plan-tips').innerHTML = tips;
+      document.getElementById('plan-tips').style.display = 'block';
+    }
 
-      function calculatePlan() {
-        const income = parseFloat(document.getElementById('income')?.value) || 0;
-        const dependents = parseInt(document.getElementById('dependents')?.value) || 0;
-        const rent = parseFloat(document.getElementById('rent')?.value) || 0;
-        const electricity = parseFloat(document.getElementById('electricity')?.value) || 0;
-        const water = parseFloat(document.getElementById('water')?.value) || 0;
-        const shared = parseFloat(document.getElementById('shared')?.value) || 0;
-        const internet = parseFloat(document.getElementById('internet')?.value) || 0;
-        const activities = parseFloat(document.getElementById('activities')?.value) || 0;
-        const insurance = parseFloat(document.getElementById('insurance')?.value) || 0;
-        const car_tax = parseFloat(document.getElementById('car_tax')?.value) || 0;
-        const smokes = parseFloat(document.getElementById('smokes')?.value) || 0;
-        const credit = parseFloat(document.getElementById('credit')?.value) || 0;
-        const loan = parseFloat(document.getElementById('loan')?.value) || 0;
-        const tax = parseFloat(document.getElementById('tax')?.value) || 0;
-
-        const fixedExpenses = rent + electricity + water + shared + internet;
-        const lifestyleExpenses = activities + insurance + car_tax + smokes;
-        const dependentCost = dependents * 150;
-
-        const monthlyDebt = credit * 0.04 + loan * 0.03 + tax * 0.02;
-
-        const remaining = income - (fixedExpenses + lifestyleExpenses + dependentCost + monthlyDebt);
-
-        let message = '', tips = '';
-        if (remaining > 300) {
-          message = `Μπράβο σου! Μετά τις υποχρεώσεις, σου μένουν περίπου <b>${remaining.toFixed(2)}€</b> κάθε μήνα.`;
-          tips = `✅ Σκέψου αποταμίευση με στόχο 10-20% μηνιαίως.<br>✅ Ξεκίνα επενδύσεις μικρού ρίσκου (π.χ. προθεσμιακές, κρατικά ομόλογα).<br>✅ Κράτα αρχείο των εξόδων και κάνε απολογισμό κάθε 2 εβδομάδες.`;
-        } else if (remaining > 0) {
-          message = `Μετά τις υποχρεώσεις, σου απομένουν <b>${remaining.toFixed(2)}€</b>. Πρόσεχε λίγο τις συνήθειες και αναζήτησε έξυπνες λύσεις.`;
-          tips = `💡 Ξανακοίτα έξοδα όπως συνδρομές, take-out και καφέδες.<br>💡 Βάλε ημερομηνία "no spend" 2 φορές/εβδομάδα.<br>💡 Μίλα με φίλο/φίλη που τα καταφέρνει για ιδέες.`;
-        } else {
-          message = `⚠️ Μετά τις υποχρεώσεις, <b>δεν φτάνουν</b> τα έσοδά σου! Λείπουν περίπου <b>${Math.abs(remaining).toFixed(2)}€</b>. Μάλλον ώρα για σοβαρή αναδιοργάνωση.`;
-          tips = `❗ Ζήτα επανεξέταση συμβολαίου κινητής/ιντερνέτ.<br>❗ Μείωσε μη-αναγκαία έξοδα (activities, τσιγάρα, take-out).<br>❗ Ρώτα αν μπορείς να μπεις σε πρόγραμμα ρύθμισης δανείου.`;
-        }
-
-        document.getElementById('plan-results').innerHTML = message;
-        document.getElementById('plan-tips').innerHTML = tips;
-        document.getElementById('plan-tips').style.display = 'block';
-      }
-
-      document.getElementById('calculate-btn').addEventListener('click', calculatePlan);
-    </script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const btn = document.getElementById('calculate-btn');
+      if (btn) btn.addEventListener('click', calculatePlan);
+    });
+  </script>
 </body>
 </html>
