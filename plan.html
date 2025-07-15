@@ -197,21 +197,21 @@
   </div>
 
 <script>
-    function startScenario(type) {
+function startScenario(type) {
   document.getElementById("scenarioSelector").style.display = "none";
   document.getElementById("plannerSteps").classList.remove("hidden");
 
   // Απόκρυψη όλων των steps
   document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
 
-  // Ποιο βήμα ξεκινάει;
-  if (type === 'plan') {
-    document.getElementById("step1").classList.add("active");
-  } else if (type === 'debt') {
+  // Πάντα ξεκινάμε από το step1
+  document.getElementById("step1").classList.add("active");
+
+  if (type === 'debt') {
     alert("Η ενότητα αποπληρωμής χρέους είναι υπό ανάπτυξη. Προς το παρόν μπορείς να συνεχίσεις με το πλάνο εξόδων.");
-    document.getElementById("step1").classList.add("active");
   }
 }
+
   function nextStep(stepNum) {
   document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
   document.getElementById(`step${stepNum}`).classList.add('active');
