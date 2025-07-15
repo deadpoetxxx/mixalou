@@ -154,21 +154,29 @@
       
         </div>
       </div>
-      <div class="step active" id="step6">
+  <div class="step active" id="step6" style="display:none;">
       <h3>Πώς θέλεις να κινηθεί η Μιχαλού για σένα;</h3>
       <label><input type="radio" name="strategy" value="fast" checked> Αποπληρωμή όσο πιο γρήγορα γίνεται</label>
       <label><input type="radio" name="strategy" value="balanced"> Συντηρητική διαχείριση</label>
       <label><input type="radio" name="strategy" value="minimal"> Ελάχιστα, απλά για να μην μπεις φυλακή</label>
       <div class="nav-buttons">
         <button onclick="nextStep(5)">Προηγούμενο</button>
-       <button onclick="calculatePlan()">Ρώτα τη Μιχαλού</button>
+        <button onclick="calculatePlan()">Ρώτα τη Μιχαλού</button>
       </div>
     </div>
 
     <div class="result" id="result" style="display:none;"></div>
   </div>
 
-  <script>
+<script>
+    function startScenario(type) {
+      document.getElementById("scenarioSelector").style.display = "none";
+      document.getElementById("step6").style.display = "block";
+      if (type === "debt") {
+        alert("Η ενότητα αποπληρωμής χρέους είναι υπό ανάπτυξη. Προς το παρόν μπορείς να συνεχίσεις με το πλάνο εξόδων.");
+      }
+    }
+
     function calculatePlan() {
       const income = parseFloat(document.getElementById('incomeFixed')?.value || 0) + parseFloat(document.getElementById('incomeExtra')?.value || 0);
       const rent = parseFloat(document.getElementById('rent')?.value || 0);
@@ -226,5 +234,3 @@
   </script>
 </body>
 </html>
-
-   
