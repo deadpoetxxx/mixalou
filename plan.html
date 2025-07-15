@@ -122,6 +122,14 @@
         <div id="plan-results">
           <p>Αντέχεις; Πατάς και βλέπεις πλάνο 👇</p>
         </div>
+         <div class="choice-box">
+      <label>Τι θες να πετύχεις αυτό το διάστημα;</label>
+      <select id="goal">
+        <option value="debt">Γρήγορη αποπληρωμή χρεών</option>
+        <option value="save">Αποταμίευση</option>
+        <option value="fun">Να το ζήσω λίγο, να βγω και έξω!</option>
+      </select>
+    </div>
         <button id="calculate-btn">Υπολόγισε Πλάνο ➜</button>
         <div id="plan-tips" class="tips" style="display:none"></div>
       </div>
@@ -134,16 +142,6 @@
   </div>
 
   <script>
-    function nextStep(step) {
-      document.querySelectorAll('.step').forEach(div => div.classList.remove('active'));
-      document.getElementById('step' + step).classList.add('active');
-    }
-
-    function resetSteps() {
-      document.querySelectorAll('.step').forEach(div => div.classList.remove('active'));
-      document.getElementById('step1').classList.add('active');
-    }
-
     function calculatePlan() {
       const income = parseFloat(document.getElementById('income')?.value) || 0;
       const dependents = parseInt(document.getElementById('dependents')?.value) || 0;
@@ -160,10 +158,17 @@
       const loan = parseFloat(document.getElementById('loan')?.value) || 0;
       const tax = parseFloat(document.getElementById('tax')?.value) || 0;
 
+      const goal = document.getElementById('goal')?.value || 'debt';
+
       const fixedExpenses = rent + electricity + water + shared + internet;
-      const lifestyleExpenses = activities + insurance + car_tax + smokes;
+      let lifestyleExpenses = activities + insurance + car_tax + smokes;
       const dependentCost = dependents * 150;
-      const monthlyDebt = credit * 0.04 + loan * 0.03 + tax * 0.02;
+      let monthlyDebt = credit * 0.04 + loan * 0.03 + tax * 0.02;
+
+      if (goal === 'debt') monthlyDebt *= 1.2;
+      if (goal === 'fun') lifestyleExpenses *= 1.2;
+      if (goal === 'save') lifestyleExpenses *= 0.85;
+
       const totalExpenses = fixedExpenses + lifestyleExpenses + dependentCost + monthlyDebt;
       const remaining = income - totalExpenses;
 
@@ -181,13 +186,21 @@
       let summary = '', tips = '';
       if (remaining > 300) {
         summary = `Μπράβο σου! Είσαι σε καλή πορεία.`;
-        tips = `✅ Απόθεσε 10-20% το μήνα<br>✅ Μίλα με σύμβουλο για επενδύσεις<br>✅ Ξεκίνα ένα emergency fund`;
+        tips = goal === 'debt' ?
+          `✅ Βάλε extra δόσεις όπου μπορείς<br>✅ Προτεραιότητα: πιστωτικές με μεγαλύτερο επιτόκιο` :
+          goal === 'save' ?
+          `✅ Ξεκίνα αποταμίευση με στόχο 20%/μήνα<br>✅ Βάλε αυτόματο έμβασμα σε savings account` :
+          `✅ Έχεις άνεση – απόλαυσε, αλλά με πρόγραμμα!<br>✅ Κράτα το 20% σε savings, τα υπόλοιπα με φαντασία!`;
       } else if (remaining > 0) {
         summary = `Οριακά, αλλά τα βγάζεις πέρα.`;
-        tips = `💡 Κόψε delivery/καφέδες<br>💡 Κάνε ρεβιζιόν εξόδων ανά εβδομάδα<br>💡 Μείωσε συνδρομές και πολυτέλειες`;
+        tips = goal === 'debt' ?
+          `💡 Μείωσε συνήθειες, βάλε κάτι παραπάνω στις κάρτες<br>💡 Κοίτα για αναχρηματοδότηση ή ενοποίηση` :
+          goal === 'save' ?
+          `💡 Ξεκίνα με μικρούς στόχους: 50€/μήνα<br>💡 Κόψε έξτρα καφέδες/delivery` :
+          `💡 Αντέχεις για λίγες εξόδους<br>💡 Απόφυγε το credit card fun`;
       } else {
         summary = `Δεν φτάνουν τα έσοδα για να καλύψουν τα έξοδα.`;
-        tips = `❗ Μίλα με τράπεζες για ρύθμιση χρεών<br>❗ Μείωσε lifestyle έξοδα<br>❗ Ψάξε για έξτρα εισόδημα ή βοηθήματα`;
+        tips = `❗ Άμεση ανάγκη για επαναπρογραμματισμό<br>❗ Ψάξε ενίσχυση εσόδων, μείωσε δραστικά lifestyle<br>❗ Σκέψου στήριξη ή ρύθμιση με πιστωτές`;
       }
 
       document.getElementById('plan-results').innerHTML = breakdown + '<p><strong>' + summary + '</strong></p>';
