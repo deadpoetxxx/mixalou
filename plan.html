@@ -2,186 +2,100 @@
 <html lang="el">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Η Μιχαλού σου βγάζει πλάνο</title>
+  <title>Υπολογιστής Διαχείρισης Χρέους</title>
   <style>
-    body { font-family: sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
-    .container { max-width: 800px; margin: 40px auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
-    h1, h2, h3 { text-align: center; color: #2c3e50; }
-    label { display: block; margin-top: 15px; font-weight: bold; }
-    input[type="number"], input[type="text"], select, textarea { width: 100%; padding: 10px; font-size: 16px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; }
-    button { margin-top: 20px; background: #0d1b2a; color: white; border: none; padding: 15px; width: 100%; font-size: 18px; cursor: pointer; border-radius: 5px; }
-    .result { background: #e0e1dd; padding: 20px; margin-top: 30px; border-radius: 8px; font-size: 18px; }
-    .tips { background: #fefae0; padding: 15px; margin-top: 20px; border-left: 5px solid #d4a373; border-radius: 5px; font-size: 16px; }
-    .step { display: none; }
-    .active { display: block; }
-    .nav-buttons { display: flex; justify-content: space-between; margin-top: 20px; }
-    .nav-buttons button { width: 48%; }
-    .header-image { text-align: center; margin-bottom: 20px; }
-    .section-title { font-size: 20px; margin-top: 30px; color: #0d1b2a; border-bottom: 2px solid #ccc; padding-bottom: 5px; }
-    .checkbox-group label { font-weight: normal; display: block; margin-top: 5px; }
-    .choice-box { margin-top: 20px; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      background-color: #1976d2;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #e0f7fa;
+      border: 1px solid #00796b;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Η Μιχαλού σου βγάζει πλάνο</h1>
 
-    <div class="step active" id="step1">
-      <label>Καθαρό Μηνιαίο Εισόδημα (€):</label>
-      <input type="number" id="income">
-      <label>Πόσα άτομα εξαρτώνται από εσένα;</label>
-      <input type="number" id="dependents">
-    </div>
+  <h2>Εργαλείο Υπολογισμού & Διαχείρισης Χρέους</h2>
 
-    <div class="step" id="step2">
-      <label>Ενοίκιο ή Δόση Δανείου (€):</label>
-      <input type="number" id="rent">
-      <label>Ρεύμα (€):</label>
-      <input type="number" id="electricity">
-      <label>Νερό (€):</label>
-      <input type="number" id="water">
-      <label>Κοινόχρηστα (€):</label>
-      <input type="number" id="shared">
-      <label>Ίντερνετ/Τηλέφωνο (€):</label>
-      <input type="number" id="internet">
-    </div>
+  <label>Μηνιαίο Εισόδημα (€):
+    <input type="number" id="income" required>
+  </label>
 
-    <div class="step" id="step3">
-      <label>Δραστηριότητες/Συνδρομές (€):</label>
-      <input type="number" id="activities">
-      <label>Ασφάλειες (€):</label>
-      <input type="number" id="insurance">
-      <label>Τέλη Κυκλοφορίας (€):</label>
-      <input type="number" id="car_tax">
-      <label>Καπνός/Καφέδες (€):</label>
-      <input type="number" id="smokes">
-    </div>
+  <label>Πάγια Έξοδα (€):
+    <input type="number" id="expenses" required>
+  </label>
 
-    <div class="step" id="step4">
-      <label>Πιστωτικές Κάρτες (€):</label>
-      <input type="number" id="credit">
-      <label>Καταναλωτικά Δάνεια (€):</label>
-      <input type="number" id="loan">
-      <label>Φόροι/Ρυθμίσεις (€):</label>
-      <input type="number" id="tax">
-    </div>
+  <label>Συνολικό Χρέος (€):
+    <input type="number" id="debt" required>
+  </label>
 
-    <div class="step" id="step5">
-      <div class="choice-box">
-        <label>Τι θες να πετύχεις αυτό το διάστημα;</label>
-        <select id="goal">
-          <option value="debt">Γρήγορη αποπληρωμή χρεών</option>
-          <option value="save">Αποταμίευση</option>
-          <option value="fun">Να το ζήσω λίγο, να βγω και έξω!</option>
-        </select>
-      </div>
-      <button id="calculate-btn" type="button">Υπολόγισε Πλάνο ➜</button>
-      <div id="plan-results"></div>
-      <div id="plan-tips" class="tips" style="display:none"></div>
-    </div>
+  <label>Επιθυμητός Χρόνος Αποπληρωμής (σε μήνες):
+    <input type="number" id="months" required>
+  </label>
 
-    <div class="nav-buttons">
-      <button id="prevBtn" type="button">Πίσω</button>
-      <button id="nextBtn" type="button">Επόμενο</button>
-    </div>
-  </div>
+  <button onclick="calculatePlan()">Υπολόγισε Πλάνο</button>
+
+  <div class="result" id="output" style="display: none;"></div>
 
   <script>
-    let currentStep = 1;
-
-    function showStep(step) {
-      document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-      const current = document.getElementById('step' + step);
-      if (current) current.classList.add('active');
-    }
-
-    document.getElementById('nextBtn').addEventListener('click', () => {
-      if (currentStep < 5) {
-        currentStep++;
-        showStep(currentStep);
-      }
-    });
-
-    document.getElementById('prevBtn').addEventListener('click', () => {
-      if (currentStep > 1) {
-        currentStep--;
-        showStep(currentStep);
-      }
-    });
-
-    showStep(currentStep);
-
     function calculatePlan() {
-      const income = parseFloat(document.getElementById('income')?.value) || 0;
-      const dependents = parseInt(document.getElementById('dependents')?.value) || 0;
-      const rent = parseFloat(document.getElementById('rent')?.value) || 0;
-      const electricity = parseFloat(document.getElementById('electricity')?.value) || 0;
-      const water = parseFloat(document.getElementById('water')?.value) || 0;
-      const shared = parseFloat(document.getElementById('shared')?.value) || 0;
-      const internet = parseFloat(document.getElementById('internet')?.value) || 0;
-      const activities = parseFloat(document.getElementById('activities')?.value) || 0;
-      const insurance = parseFloat(document.getElementById('insurance')?.value) || 0;
-      const car_tax = parseFloat(document.getElementById('car_tax')?.value) || 0;
-      const smokes = parseFloat(document.getElementById('smokes')?.value) || 0;
-      const credit = parseFloat(document.getElementById('credit')?.value) || 0;
-      const loan = parseFloat(document.getElementById('loan')?.value) || 0;
-      const tax = parseFloat(document.getElementById('tax')?.value) || 0;
+      const income = parseFloat(document.getElementById('income').value);
+      const expenses = parseFloat(document.getElementById('expenses').value);
+      const debt = parseFloat(document.getElementById('debt').value);
+      const months = parseInt(document.getElementById('months').value);
 
-      const goal = document.getElementById('goal')?.value || 'debt';
-
-      const fixedExpenses = rent + electricity + water + shared + internet;
-      let lifestyleExpenses = activities + insurance + car_tax + smokes;
-      const dependentCost = dependents * 150;
-      let monthlyDebt = credit * 0.04 + loan * 0.03 + tax * 0.02;
-
-      if (goal === 'debt') monthlyDebt *= 1.2;
-      if (goal === 'fun') lifestyleExpenses *= 1.2;
-      if (goal === 'save') lifestyleExpenses *= 0.85;
-
-      const totalExpenses = fixedExpenses + lifestyleExpenses + dependentCost + monthlyDebt;
-      const remaining = income - totalExpenses;
-
-      const breakdown = `
-        <h3>Αναλυτικό Πλάνο Μιχαλούς</h3>
-        <ul>
-          <li><b>Ανελαστικά έξοδα:</b> ${fixedExpenses.toFixed(2)}€</li>
-          <li><b>Έξοδα διαβίωσης/συνήθειες:</b> ${lifestyleExpenses.toFixed(2)}€</li>
-          <li><b>Κόστος εξαρτώμενων:</b> ${dependentCost.toFixed(2)}€</li>
-          <li><b>Χρέη (μηνιαία δόση):</b> ${monthlyDebt.toFixed(2)}€</li>
-          <li><b>Σύνολο υποχρεώσεων:</b> ${totalExpenses.toFixed(2)}€</li>
-          <li><b>Μένουν στο χέρι:</b> ${remaining.toFixed(2)}€</li>
-        </ul>`;
-
-      let summary = '', tips = '';
-      if (remaining > 300) {
-        summary = `Μπράβο σου! Είσαι σε καλή πορεία.`;
-        tips = goal === 'debt' ?
-          `✅ Βάλε extra δόσεις όπου μπορείς<br>✅ Προτεραιότητα: πιστωτικές με μεγαλύτερο επιτόκιο` :
-          goal === 'save' ?
-          `✅ Ξεκίνα αποταμίευση με στόχο 20%/μήνα<br>✅ Βάλε αυτόματο έμβασμα σε savings account` :
-          `✅ Έχεις άνεση – απόλαυσε, αλλά με πρόγραμμα!<br>✅ Κράτα το 20% σε savings, τα υπόλοιπα με φαντασία!`;
-      } else if (remaining > 0) {
-        summary = `Οριακά, αλλά τα βγάζεις πέρα.`;
-        tips = goal === 'debt' ?
-          `💡 Μείωσε συνήθειες, βάλε κάτι παραπάνω στις κάρτες<br>💡 Κοίτα για αναχρηματοδότηση ή ενοποίηση` :
-          goal === 'save' ?
-          `💡 Ξεκίνα με μικρούς στόχους: 50€/μήνα<br>💡 Κόψε έξτρα καφέδες/delivery` :
-          `💡 Αντέχεις για λίγες εξόδους<br>💡 Απόφυγε το credit card fun`;
-      } else {
-        summary = `Δεν φτάνουν τα έσοδα για να καλύψουν τα έξοδα.`;
-        tips = `❗ Άμεση ανάγκη για επαναπρογραμματισμό<br>❗ Ψάξε ενίσχυση εσόδων, μείωσε δραστικά το lifestyle<br>❗ Σκέψου εναλλακτικές λύσεις για μείωση κόστους ή αύξηση εισοδήματος`;
+      if (isNaN(income) || isNaN(expenses) || isNaN(debt) || isNaN(months) || months <= 0) {
+        alert("Συμπλήρωσε όλα τα πεδία σωστά!");
+        return;
       }
 
-      document.getElementById('plan-results').innerHTML = breakdown + '<p><strong>' + summary + '</strong></p>';
-      document.getElementById('plan-tips').innerHTML = tips;
-      document.getElementById('plan-tips').style.display = 'block';
-    }
+      const available = income - expenses;
+      const monthlyPayment = debt / months;
 
-    document.addEventListener('DOMContentLoaded', function () {
-      const btn = document.getElementById('calculate-btn');
-      if (btn) btn.addEventListener('click', calculatePlan);
-    });
+      let message = `
+        <strong>Υπόλοιπο μετά τα πάγια έξοδα:</strong> €${available.toFixed(2)}<br>
+        <strong>Απαιτούμενη μηνιαία δόση:</strong> €${monthlyPayment.toFixed(2)}<br>
+      `;
+
+      if (monthlyPayment > available) {
+        message += `<strong style="color:red;">⚠️ Το υπόλοιπό σου δεν επαρκεί για το προτεινόμενο πλάνο.</strong>`;
+      } else {
+        message += `<strong style="color:green;">✅ Το πλάνο είναι εφικτό. Μπορείς να αποπληρώσεις το χρέος σε ${months} μήνες.</strong>`;
+      }
+
+      const outputDiv = document.getElementById('output');
+      outputDiv.innerHTML = message;
+      outputDiv.style.display = 'block';
+    }
   </script>
+
 </body>
 </html>
