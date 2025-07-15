@@ -76,14 +76,14 @@
           <option value="fun">Να το ζήσω λίγο, να βγω και έξω!</option>
         </select>
       </div>
-      <button id="calculate-btn">Υπολόγισε Πλάνο ➜</button>
+      <button id="calculate-btn" type="button">Υπολόγισε Πλάνο ➜</button>
       <div id="plan-results"></div>
       <div id="plan-tips" class="tips" style="display:none"></div>
     </div>
 
     <div class="nav-buttons">
-      <button id="prevBtn">Πίσω</button>
-      <button id="nextBtn">Επόμενο</button>
+      <button id="prevBtn" type="button">Πίσω</button>
+      <button id="nextBtn" type="button">Επόμενο</button>
     </div>
   </div>
 
@@ -111,10 +111,7 @@
     });
 
     showStep(currentStep);
-  </script>
-  <script>
 
-  <script>
     function calculatePlan() {
       const income = parseFloat(document.getElementById('income')?.value) || 0;
       const dependents = parseInt(document.getElementById('dependents')?.value) || 0;
@@ -173,7 +170,7 @@
           `💡 Αντέχεις για λίγες εξόδους<br>💡 Απόφυγε το credit card fun`;
       } else {
         summary = `Δεν φτάνουν τα έσοδα για να καλύψουν τα έξοδα.`;
-        tips = `❗ Άμεση ανάγκη για επαναπρογραμματισμό<br>❗ Ψάξε ενίσχυση εσόδων, μείωσε δραστικά lifestyle<br>❗ Σκέψου στήριξη ή ρύθμιση με πιστωτές`;
+        tips = `❗ Άμεση ανάγκη για επαναπρογραμματισμό<br>❗ Ψάξε ενίσχυση εσόδων, μείωσε δραστικά το lifestyle<br>❗ Σκέψου εναλλακτικές λύσεις για μείωση κόστους ή αύξηση εισοδήματος`;
       }
 
       document.getElementById('plan-results').innerHTML = breakdown + '<p><strong>' + summary + '</strong></p>';
