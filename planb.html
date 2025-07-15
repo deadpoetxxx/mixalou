@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Η Μιχαλού σου βγάζει πλάνο</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    h1, h2, h3 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+    input[type="number"], input[type="text"], select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      margin-top: 20px;
+      background: #0d1b2a;
+      color: white;
+      border: none;
+      padding: 15px;
+      width: 100%;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #1e2f43;
+    }
+    .result {
+      background: #eafaf1;
+      padding: 20px;
+      margin-top: 30px;
+      border-radius: 10px;
+      font-size: 18px;
+    }
+    .step {
+      display: none;
+    }
+    .active {
+      display: block;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .nav-buttons button {
+      width: 48%;
+    }
+    .hidden {
+      display: none;
+    }
+    .header-image {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header-image img {
+      max-width: 150px;
+      height: auto;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-image">
+      <img src="https://github.com/deadpoetxxx/mixalou/blob/main/mixalou.jpg?raw=true" alt="Η Μιχαλού κρατάει τα λεφτά">
+    </div>
+    <h1>Η Μιχαλού σου βγάζει πλάνο</h1>
+
+    <div class="step active" id="step6">
+      <h3>Πώς θέλεις να κινηθεί η Μιχαλού για σένα;</h3>
+      <label><input type="radio" name="strategy" value="fast" checked> Αποπληρωμή όσο πιο γρήγορα γίνεται</label>
+      <label><input type="radio" name="strategy" value="balanced"> Συντηρητική διαχείριση</label>
+      <label><input type="radio" name="strategy" value="minimal"> Ελάχιστα, απλά για να μην μπεις φυλακή</label>
+      <div class="nav-buttons">
+        <button onclick="nextStep(5)">Προηγούμενο</button>
+        <button onclick="calculatePlan()">Ρώτα τη Μιχαλού</button>
+      </div>
+    </div>
+
+    <div class="result" id="result" style="display:none;"></div>
+  </div>
+
+  <script>
+    function calculatePlan() {
+      const income = parseFloat(document.getElementById('incomeFixed')?.value || 0) + parseFloat(document.getElementById('incomeExtra')?.value || 0);
+      const rent = parseFloat(document.getElementById('rent')?.value || 0);
+      const electricity = parseFloat(document.getElementById('electricity')?.value || 0);
+      const water = parseFloat(document.getElementById('water')?.value || 0);
+      const utilities = parseFloat(document.getElementById('utilities')?.value || 0);
+      const internet = parseFloat(document.getElementById('internet')?.value || 0);
+      const kids = parseFloat(document.getElementById('kidsActivities')?.value || 0);
+      const insurance = parseFloat(document.getElementById('insurance')?.value || 0);
+      const carFees = parseFloat(document.getElementById('carFees')?.value || 0);
+      const cigarettes = parseFloat(document.getElementById('cigarettes')?.value || 0);
+
+      const loanBank = parseFloat(document.getElementById('loanBank')?.value || 0);
+      const creditCard = parseFloat(document.getElementById('creditCard')?.value || 0);
+      const taxes = parseFloat(document.getElementById('taxes')?.value || 0);
+      const others = parseFloat(document.getElementById('others')?.value || 0);
+
+      const strategy = document.querySelector('input[name="strategy"]:checked')?.value || 'balanced';
+
+      const debt = loanBank + creditCard + taxes + others;
+      const totalExpenses = rent + electricity + water + utilities + internet + kids + insurance + carFees + cigarettes + debt;
+      const leftover = income - totalExpenses;
+
+      const result = document.getElementById('result');
+      result.style.display = 'block';
+
+      let suggestion = '';
+      if (strategy === 'fast') {
+        suggestion = '💪 Επιθετικό πλάνο αποπληρωμής. Μειώνεις άλλα έξοδα και ξεχρεώνεις γρήγορα!';
+      } else if (strategy === 'balanced') {
+        suggestion = '📘 Ισορροπία ανάμεσα σε ανάγκες και αποπληρωμή. Προτείνεται διατήρηση σταθερών δόσεων και μέτρια αποταμίευση.';
+      } else {
+        suggestion = '⚠️ Προσοχή! Μόνο τα ελάχιστα για αποφυγή κυρώσεων. Σκέψου βοήθεια ή αναδιάρθρωση.';
+      }
+
+      result.innerHTML = `
+        <h3>📊 Πλάνο Μιχαλούς</h3>
+        <p><strong>Σύνολο Εισοδήματος:</strong> €${income.toFixed(2)}</p>
+        <p><strong>Σύνολο Εξόδων:</strong> €${totalExpenses.toFixed(2)}</p>
+        <p><strong>Υπόλοιπο:</strong> €${leftover.toFixed(2)}</p>
+        <p><strong>Προτεινόμενο Πλάνο:</strong><br>${suggestion}</p>
+        <h4>Κατανομή Υπολοίπου:</h4>
+        <ul>
+          <li>Σούπερ Μάρκετ: €${(leftover * 0.35).toFixed(2)}</li>
+          <li>Καύσιμα / Μετακίνηση: €${(leftover * 0.20).toFixed(2)}</li>
+          <li>Ρούχα / Είδη Σπιτιού: €${(leftover * 0.15).toFixed(2)}</li>
+          <li>Διασκέδαση: €${(leftover * 0.10).toFixed(2)}</li>
+          <li>Αποταμίευση: €${(leftover * 0.20).toFixed(2)}</li>
+        </ul>
+        ${cigarettes > 0 ? `<p style="color:red;"><strong>💣 Κόψε το τσιγάρο – εξοικονομείς +ζεις!</strong></p>` : ''}
+        <p><em>💡 Tip: Προτίμησε προϊόντα ιδιωτικής ετικέτας – εξοικονόμηση έως 20%.</em></p>
+      `;
+      window.scrollTo({ top: result.offsetTop, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
