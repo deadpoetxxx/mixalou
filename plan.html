@@ -170,12 +170,31 @@
 
 <script>
     function startScenario(type) {
-      document.getElementById("scenarioSelector").style.display = "none";
-      document.getElementById("step6").style.display = "block";
-      if (type === "debt") {
-        alert("Η ενότητα αποπληρωμής χρέους είναι υπό ανάπτυξη. Προς το παρόν μπορείς να συνεχίσεις με το πλάνο εξόδων.");
-      }
-    }
+  document.getElementById("scenarioSelector").style.display = "none";
+  document.getElementById("plannerSteps").classList.remove("hidden");
+
+  // Απόκρυψη όλων των steps
+  document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+
+  // Ποιο βήμα ξεκινάει;
+  if (type === 'plan') {
+    document.getElementById("step1").classList.add("active");
+  } else if (type === 'debt') {
+    alert("Η ενότητα αποπληρωμής χρέους είναι υπό ανάπτυξη. Προς το παρόν μπορείς να συνεχίσεις με το πλάνο εξόδων.");
+    document.getElementById("step1").classList.add("active");
+  }
+}
+  function nextStep(stepNum) {
+  document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+  document.getElementById(`step${stepNum}`).classList.add('active');
+}
+function resetSteps() {
+  document.getElementById("plannerSteps").classList.remove("hidden");
+  document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+  document.getElementById("step1").classList.add("active");
+  document.getElementById("result").style.display = 'none';
+  window.scrollTo({ top: 0 });
+}
 
     function calculatePlan() {
       const income = parseFloat(document.getElementById('incomeFixed')?.value || 0) + parseFloat(document.getElementById('incomeExtra')?.value || 0);
@@ -231,6 +250,7 @@
       `;
       window.scrollTo({ top: result.offsetTop, behavior: 'smooth' });
     }
+  
   </script>
 </body>
 </html>
