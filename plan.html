@@ -94,106 +94,93 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header-image">
-
-      <img src="https://github.com/deadpoetxxx/mixalou/raw/main/mixalou.jpg?v=3" alt="Η Μιχαλού κρατάει τα λεφτά" onclick="resetSteps()">
+ <div id="plannerSteps" class="hidden">
+  <div class="step" id="step1">
+    <label>Πόσα φέρνεις στο σπίτι σταθερά από τη δουλειά κάθε μήνα; (€)</label>
+    <input type="number" id="incomeFixed">
+    <div class="nav-buttons">
+      <button onclick="resetSteps()">Αρχή</button>
+      <button onclick="nextStep(2)">Επόμενο</button>
     </div>
-    <h1>Η Μιχαλού σου βγάζει πλάνο</h1>
-
-    <div id="scenarioSelector">
-      <h3>Τι θέλεις από τη Μιχαλού;</h3>
-      <button onclick="startScenario('plan')">🧾 Πλάνο Μηνιαίων Εξόδων</button>
-      <button onclick="startScenario('debt')">💣 Πλάνο Αποπληρωμής Χρέους</button>
-    </div>
-
-    <div id="plannerSteps" class="hidden">
-      <div class="step active" id="step1">
-        <label>Πόσα φέρνεις στο σπίτι σταθερά από τη δουλειά κάθε μήνα; (€)</label>
-        <input type="number" id="incomeFixed">
-        <div class="nav-buttons">
-          <button onclick="resetSteps()">Αρχή</button>
-          <button onclick="nextStep(2)">Επόμενο</button>
-        </div>
-      </div>
-
-      <div class="step" id="step2">
-        <label>Υπάρχει και κανένα τυχερό (π.χ. πεθερά, λαχείο); (€)</label>
-        <input type="number" id="incomeExtra">
-        <div class="nav-buttons">
-          <button onclick="nextStep(1)">Προηγούμενο</button>
-          <button onclick="nextStep(3)">Επόμενο</button>
-        </div>
-      </div>
-
-      <div class="step" id="step3">
-        <p id="totalIncomeText"></p>
-        <div class="nav-buttons">
-          <button onclick="nextStep(2)">Προηγούμενο</button>
-          <button onclick="nextStep(4)">Πάμε να δούμε τι τρως</button>
-        </div>
-      </div>
-
-      <div class="step" id="step4">
-        <label>Ενοίκιο (€)</label><input type="number" id="rent">
-        <label>Ρεύμα (€)</label><input type="number" id="electricity">
-        <label>Νερό (€)</label><input type="number" id="water">
-        <label>Κοινόχρηστα (€)</label><input type="number" id="utilities">
-        <label>Τηλέφωνο/Ίντερνετ (€)</label><input type="number" id="internet">
-        <label>Φροντιστήρια / Δραστηριότητες (€)</label><input type="number" id="kidsActivities">
-        <label>Ασφάλειες (μηνιαίος υπολογισμός) (€)</label><input type="number" id="insurance">
-        <label>Τέλη Κυκλοφορίας (μηνιαίος υπολογισμός) (€)</label><input type="number" id="carFees">
-        <label>Τσιγάρα (αν επιμένεις!) (€)</label><input type="number" id="cigarettes">
-        <div class="nav-buttons">
-          <button onclick="nextStep(3)">Προηγούμενο</button>
-          <button onclick="nextStep(5)">Επόμενο</button>
-        </div>
-      </div>
-
-     <div class="step" id="step5">
-  <label>Τι χρωστάς και σε ποιους, παιδί μου;</label>
-
-  <label>Δάνειο Τράπεζας – Μηνιαία Δόση (€)</label>
-  <input type="number" id="loanBank">
-  <label>Συνολικό Οφειλόμενο Δάνειο (€)</label>
-  <input type="number" id="loanBank_total">
-
-  <label>Πιστωτική Κάρτα – Μηνιαία Πληρωμή (€)</label>
-  <input type="number" id="creditCard">
-  <label>Συνολικό Υπόλοιπο Πιστωτικής (€)</label>
-  <input type="number" id="creditCard_total">
-
-  <label>Εφορία – Μηνιαία Δόση (€)</label>
-  <input type="number" id="taxes">
-  <label>Συνολική Οφειλή στην Εφορία (€)</label>
-  <input type="number" id="taxes_total">
-
-  <label>Άλλοι (π.χ. συγγενείς) – Μηνιαία Δόση (€)</label>
-  <input type="number" id="others">
-  <label>Συνολική Οφειλή σε Άλλους (€)</label>
-  <input type="number" id="others_total">
-
-  <div class="nav-buttons">
-    <button onclick="nextStep(4)">Προηγούμενο</button>
-    <button onclick="nextStep(6)">Επόμενο</button>
   </div>
+
+  <div class="step" id="step2">
+    <label>Υπάρχει και κανένα τυχερό (π.χ. πεθερά, λαχείο); (€)</label>
+    <input type="number" id="incomeExtra">
+    <div class="nav-buttons">
+      <button onclick="nextStep(1)">Προηγούμενο</button>
+      <button onclick="nextStep(3)">Επόμενο</button>
+    </div>
+  </div>
+
+  <div class="step" id="step3">
+    <p id="totalIncomeText"></p>
+    <div class="nav-buttons">
+      <button onclick="nextStep(2)">Προηγούμενο</button>
+      <button onclick="nextStep(4)">Πάμε να δούμε τι τρως</button>
+    </div>
+  </div>
+
+  <div class="step" id="step4">
+    <label>Ενοίκιο (€)</label><input type="number" id="rent">
+    <label>Ρεύμα (€)</label><input type="number" id="electricity">
+    <label>Νερό (€)</label><input type="number" id="water">
+    <label>Κοινόχρηστα (€)</label><input type="number" id="utilities">
+    <label>Τηλέφωνο/Ίντερνετ (€)</label><input type="number" id="internet">
+    <label>Φροντιστήρια / Δραστηριότητες (€)</label><input type="number" id="kidsActivities">
+    <label>Ασφάλειες (μηνιαίος υπολογισμός) (€)</label><input type="number" id="insurance">
+    <label>Τέλη Κυκλοφορίας (μηνιαίος υπολογισμός) (€)</label><input type="number" id="carFees">
+    <label>Τσιγάρα (αν επιμένεις!) (€)</label><input type="number" id="cigarettes">
+    <div class="nav-buttons">
+      <button onclick="nextStep(3)">Προηγούμενο</button>
+      <button onclick="nextStep(5)">Επόμενο</button>
+    </div>
+  </div>
+
+  <div class="step" id="step5">
+    <label>Τι χρωστάς και σε ποιους, παιδί μου;</label>
+
+    <label>Δάνειο Τράπεζας – Μηνιαία Δόση (€)</label>
+    <input type="number" id="loanBank">
+    <label>Συνολικό Οφειλόμενο Δάνειο (€)</label>
+    <input type="number" id="loanBank_total">
+
+    <label>Πιστωτική Κάρτα – Μηνιαία Πληρωμή (€)</label>
+    <input type="number" id="creditCard">
+    <label>Συνολικό Υπόλοιπο Πιστωτικής (€)</label>
+    <input type="number" id="creditCard_total">
+
+    <label>Εφορία – Μηνιαία Δόση (€)</label>
+    <input type="number" id="taxes">
+    <label>Συνολική Οφειλή στην Εφορία (€)</label>
+    <input type="number" id="taxes_total">
+
+    <label>Άλλοι (π.χ. συγγενείς) – Μηνιαία Δόση (€)</label>
+    <input type="number" id="others">
+    <label>Συνολική Οφειλή σε Άλλους (€)</label>
+    <input type="number" id="others_total">
+
+    <div class="nav-buttons">
+      <button onclick="nextStep(4)">Προηγούμενο</button>
+      <button onclick="nextStep(6)">Επόμενο</button>
+    </div>
+  </div>
+
+  <div class="step" id="step6">
+    <h3>Πώς θέλεις να κινηθεί η Μιχαλού για σένα;</h3>
+    <label><input type="radio" name="strategy" value="fast" checked> Αποπληρωμή όσο πιο γρήγορα γίνεται</label>
+    <label><input type="radio" name="strategy" value="balanced"> Συντηρητική διαχείριση</label>
+    <label><input type="radio" name="strategy" value="minimal"> Ελάχιστα, απλά για να μην μπεις φυλακή</label>
+    <div class="nav-buttons">
+      <button onclick="nextStep(5)">Προηγούμενο</button>
+      <button onclick="calculatePlan()">Ρώτα τη Μιχαλού</button>
+    </div>
+  </div>
+
+  <!-- Αποτελέσματα εδώ -->
+  <div class="result" id="result" style="display:none;"></div>
 </div>
- <div class="step active" id="step6">
-      <h3>Πώς θέλεις να κινηθεί η Μιχαλού για σένα;</h3>
-      <label><input type="radio" name="strategy" value="fast" checked> Αποπληρωμή όσο πιο γρήγορα γίνεται</label>
-      <label><input type="radio" name="strategy" value="balanced"> Συντηρητική διαχείριση</label>
-      <label><input type="radio" name="strategy" value="minimal"> Ελάχιστα, απλά για να μην μπεις φυλακή</label>
-      <div class="nav-buttons">
-        <button onclick="nextStep(5)">Προηγούμενο</button>
-        <button onclick="calculatePlan()">Ρώτα τη Μιχαλού</button>
-      </div>
-    </div>
-      
-     
- 
 
-    <div class="result" id="result" style="display:none;"></div>
-  </div>
 
 <script>
     function startScenario(type) {
