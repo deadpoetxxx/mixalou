@@ -179,6 +179,39 @@
       document.querySelectorAll('.step').forEach(div => div.classList.remove('active'));
       document.getElementById('step1').classList.add('active');
     }
+    function calculatePlan() {
+  const income = parseFloat(document.getElementById('income').value) || 0;
+  const dependents = parseInt(document.getElementById('dependents').value) || 0;
+  const housing = parseFloat(document.getElementById('housingCost').value) || 0;
+
+  const transport = parseFloat(document.querySelector('#step3 input[type="number"]').value) || 0;
+  const food = parseFloat(document.querySelector('#step4 input[type="number"]').value) || 0;
+
+  const creditCard = parseFloat(document.querySelector('#step5 input:nth-of-type(1)').value) || 0;
+  const loan = parseFloat(document.querySelector('#step5 input:nth-of-type(2)').value) || 0;
+  const taxes = parseFloat(document.querySelector('#step5 input:nth-of-type(3)').value) || 0;
+
+  const totalDebt = creditCard + loan + taxes;
+  const totalFixedExpenses = housing + transport + food;
+  const remaining = income - totalFixedExpenses;
+
+  const monthsToRepay = (remaining > 0 && totalDebt > 0) ? Math.ceil(totalDebt / remaining) : '∞';
+
+  const resultBox = document.querySelector('#step6 .result');
+  resultBox.innerHTML = `
+    <h3>🎯 Το Πλάνο Μιχαλούς</h3>
+    <ul>
+      <li><strong>Καθαρό εισόδημα:</strong> €${income.toFixed(2)}</li>
+      <li><strong>Σταθερά μηνιαία έξοδα:</strong> €${totalFixedExpenses.toFixed(2)}</li>
+      <li><strong>Υπόλοιπο:</strong> €${remaining.toFixed(2)}</li>
+      <li><strong>Συνολικό χρέος:</strong> €${totalDebt.toFixed(2)}</li>
+      <li><strong>Εκτίμηση μηνών για αποπληρωμή:</strong> ${monthsToRepay}</li>
+    </ul>
+    <p><em>*Βασίζεται στα στοιχεία που έδωσες. Δεν αποτελεί οικονομική συμβουλή αλλά καμπανάκι ✨</em></p>
+    <button onclick="alert('💡 Έρχεται εξατομικευμένο πλάνο!')">Συνέχισε ➜</button>
+  `;
+}
+
   </script>
 </body>
 </html>
